@@ -27,12 +27,30 @@ namespace Ganzenbord.Unittests
             player.MoveToPosition(16);
             int[] dice = { 1, 2 };
 
+
             //act
             player.Move(dice);
 
             //assert
             Assert.Equal(1, player.AmountOfSkips);
         }
+        [Fact]
+        public void WhenPlayerLandsOnInnAndSkipsTurn_ThenStaysOnPositionAndLowersSkipsAmount()
+        {
+            //arrange
+            Player player = new Player();
+            player.MoveToPosition(16);
+            int[] dice = { 1, 2 };
+            player.Move(dice);
+
+            //act
+            player.StartTurn();
+
+            //assert
+            Assert.Equal(19, player.Position);
+            Assert.Equal(0, player.AmountOfSkips);
+        }
+
 
         [Fact]
         public void WhenPlayerLandsOnWell_ThenSkipUntilAnotherPlayerArrives()
@@ -64,6 +82,21 @@ namespace Ganzenbord.Unittests
             Assert.Equal(39, player.Position);
         }
 
+        [Fact]
+        public void WhenPlayerLandsOnPrisoAndSkipsTurn_ThenStaysOnPositionAndLowersSkipsAmount()
+        {
+            //arrange
+            Player player = new Player();
+            player.MoveToPosition(49);
+            int[] dice = { 1, 2 };
+            player.Move(dice);
+            //act
+            player.StartTurn();
+
+            //assert
+            Assert.Equal(52, player.Position);
+            Assert.Equal(2, player.AmountOfSkips);
+        }
         [Fact]
         public void WhenPlayerLandsOnPrison_ThenSkip3Turns()
         {
@@ -98,7 +131,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnEnd_ThenEndGame()
         {/*
             //arrange
-            
+
             Player player = new Player();
             Player[] players = { player };
             game.Players = players;

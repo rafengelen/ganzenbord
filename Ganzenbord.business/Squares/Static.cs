@@ -1,12 +1,14 @@
-﻿namespace Ganzenbord.Business.Squares
+﻿using Ganzenbord.Business.Logger;
+
+namespace Ganzenbord.Business.Squares
 {
-    public class Inn : ISquare
+    public class Static : ISquare
     {
         public int Position { get; set; }
 
         public void PlayerEntersSquare(Player player)
         {
-            player.TurnsToSkip(1);
+            //Log?
         }
     }
 }
