@@ -10,13 +10,6 @@ namespace Ganzenbord.Business
         public int AmountOfSkips { get; private set; } = 0;
         public bool KeepSkipping { get; set; } = false;
 
-        private SquareFactory squareFactory;
-
-        public Player()
-        {
-            squareFactory = new SquareFactory();
-        }
-
         public void StartTurn()
         {
             if (KeepSkipping)
@@ -84,6 +77,8 @@ namespace Ganzenbord.Business
             //ISquare square = GameBoard.GetSquare(position);
             //ISquare square = squareFactory.Create(type);
             //square.PlayerEntersSquare(this);
+            ISquare square = Game.Instance.GameBoard.GetSquare(position);
+            square.PlayerEntersSquare(this);
         }
 
         internal void TurnsToSkip(int amountOfSkips)

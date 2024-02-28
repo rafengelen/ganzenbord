@@ -11,7 +11,6 @@ namespace Ganzenbord.Business
     public class GameBoard
     {
         private ISquare[] Squares { get; set; }
-        private SquareFactory squareFactory;
         Dictionary<int, SquareType> specialSquares = new Dictionary<int, SquareType>
             {
                 { 6, SquareType.Bridge },
@@ -22,27 +21,36 @@ namespace Ganzenbord.Business
                 { 58, SquareType.Death },
                 { 63, SquareType.End }
             };
-        public GameBoard() { 
-            squareFactory = new SquareFactory();
+        public GameBoard()
+        {
+            SetupGameBoard();
         }
-        public void SetupGameBoard()
+        internal void SetupGameBoard()
         {
             ISquare[] squares = new ISquare[64];
 
-            for (int i = 0; i < 64 ; i++)
+            for (int i = 0; i < 64; i++)
             {
-                SquareType type = SquareType.Static;
-                if (specialSquares.TryGetValue(i, out SquareType value)){
-                    type = value;
-                }
-             
-                squares[i]= squareFactory.Create(type);
+                squares[i] = addSquare(i);
             }
             Squares = squares;
         }
         public ISquare GetSquare(int position)
         {
             return Squares[position];
+        }
+        
+        private ISquare addSquare(int position)
+        {
+            if (specialSquares.TryGetValue(position, out SquareType value))
+            {
+
+                return SquareFactory.Create(value);
+            }
+            else
+            {
+                return SquareFactory.Create(SquareType.Static);
+            }
         }
     }
 }

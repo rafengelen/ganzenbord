@@ -10,8 +10,9 @@
             if (SkippedPlayer != null) {
                 SkippedPlayer.KeepSkipping = false;
             } 
+            player.KeepSkipping=true;
             SkippedPlayer = player;
-            player
+            
         }
     }
 }

@@ -13,7 +13,7 @@ game.StartGame([ player1,player2]);
 Console.WriteLine("hi");*/
 
 GameBoard board = new GameBoard();
-board.SetupGameBoard();
+//board.SetupGameBoard();
 for (int i = 0; i < 64; i++)
 {
     Console.WriteLine(i);

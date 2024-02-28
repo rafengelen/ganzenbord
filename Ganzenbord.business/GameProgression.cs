@@ -10,7 +10,6 @@ namespace Ganzenbord.Business
     public class GameProgression
     {
         ILogger logger;
-        public bool ActiveGame {  get; private set; }=true;
         public Player[] Players { get; private set; }
         public GameProgression(ILogger logger)
         {
@@ -19,15 +18,15 @@ namespace Ganzenbord.Business
         public void StartGame(Player[] players)
         {
             Players = players;
-            Game.Instance.ResetGame();
-            while (ActiveGame)
+            Game.Instance.StartGame();
+            while (Game.Instance.ActiveGame)
             {
                 Game.Instance.PlayRound(Players);
             }
         }
         public void StopGame()
         {
-            ActiveGame = false;
+            Game.Instance.StopGame();
             logger.Log("The game has ended.");
         }
 

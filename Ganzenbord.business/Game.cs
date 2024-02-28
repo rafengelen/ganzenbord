@@ -1,11 +1,14 @@
-﻿namespace Ganzenbord.Business
+﻿
+
+namespace Ganzenbord.Business
 {
     public class Game
     {
         private static Game _Instance;
+        public bool ActiveGame { get; private set; } = false;
         public int Turn { get; set; } = 1;
         public Player[] Players { get; set; }
-        public GameBoard gameBoard { get; set; }
+        public GameBoard GameBoard { get; set; }
         private Game()
         { }
 
@@ -29,10 +32,17 @@
             }
             Turn++;
         }
-        public void ResetGame()
+
+        public void StopGame()
+        {
+            ActiveGame = false;
+        }
+
+        public void StartGame()
         {
             Turn = 1;
-            
+            GameBoard = new GameBoard();
+            ActiveGame = true;
         }
     }
 }

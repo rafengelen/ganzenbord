@@ -6,7 +6,7 @@
 
         public void PlayerEntersSquare(Player player)
         {
-            //player.Game.EndGame();
+            Game.Instance.StopGame();
         }
     }
 }

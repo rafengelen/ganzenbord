@@ -2,81 +2,32 @@
 
 namespace Ganzenbord.Business.Factory
 {
-    internal class SquareFactory
+    public class SquareFactory
     {
-        public ISquare Create(SquareType squareType)
+        public static ISquare Create(SquareType squareType)
         {
-            ISquare square = null;
 
             switch (squareType)
             {
                 case SquareType.Static:
-                    square = new Static();
-                    break;
-
+                    return new Static();
                 case SquareType.Maze:
-                    square = new Maze();
-                    break;
-
+                    return new Maze();
                 case SquareType.End:
-                    square = new End();
-                    break;
-
+                    return new End();
                 case SquareType.Inn:
-                    square = new Inn();
-                    break;
-
+                    return new Inn();
                 case SquareType.Death:
-                    square = new Death();
-                    break;
-
+                    return new Death();
                 case SquareType.Prison:
-                    square = new Prison();
-                    break;
-
+                    return new Prison();
                 case SquareType.Well:
-                    square = new Well();
-                    break;
-
+                    return new Well();
                 case SquareType.Bridge:
-                    square = new Bridge();
-                    break;
+                    return new Bridge();
+                default:
+                    return new Static();                    
             }
-            /*
-
-            if (position == 6)
-            {
-                square = new Bridge();
-            }
-            else if (position == 19)
-            {
-                square = new Inn();
-            }
-            else if (position == 31)
-            {
-                square = new Well();
-            }
-            else if (position == 42)
-            {
-                square = new Maze();
-            }
-            else if (position == 52)
-            {
-                square = new Prison();
-            }
-            else if (position == 58)
-            {
-                square = new Death();
-            }
-            else if (position == 63)
-            {
-                square = new End();
-            }
-            else
-            {
-                square = new Static();
-            }*/
-            return square;
         }
     }
 }
