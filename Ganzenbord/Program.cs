@@ -7,4 +7,4 @@ ILogger logger = new ConsoleLogger();
 GameProgression game = new GameProgression(logger);
 Player player1 = new Player(PlayerColor.Red, logger);
 Player player2 = new Player(PlayerColor.Blue, logger);
-game.StartGame([player1, player2], GameBoardType.GooseGame);
+game.StartGame([player1, player2]);

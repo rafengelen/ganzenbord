@@ -7,6 +7,7 @@
         public void PlayerEntersSquare(Player player)
         {
             Game.Instance.StopGame();
+            Game.Instance.ActiveGame =false;
         }
     }
 }

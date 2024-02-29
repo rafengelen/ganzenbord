@@ -7,15 +7,17 @@ namespace Ganzenbord.Business
         private ILogger logger;
         public Player[] Players { get; private set; }
 
+
         public GameProgression(ILogger logger)
         {
             this.logger = logger;
         }
 
-        public void StartGame(Player[] players, GameBoardType type)
+        public void StartGame(Player[] players)
         {
             Players = players;
-            Game.Instance.StartGame(type);
+
+            Game.Instance.StartGame();
             while (Game.Instance.ActiveGame)
             {
                 PlayRound(Players);
@@ -23,10 +25,11 @@ namespace Ganzenbord.Business
             logger.Log("End Results: ");
             foreach (Player player in Players)
             {
-                logger.Log($"player: {player.Position}");
+                logger.Log($"{player.Color}: {player.Position}");
             }
             StopGame();
         }
+
         public void PlayRound(Player[] players)
         {
             logger.Log($"Start round: {Game.Instance.Turn}");
@@ -37,6 +40,7 @@ namespace Ganzenbord.Business
             }
             Game.Instance.Turn++;
         }
+
         public void StopGame()
         {
             Game.Instance.StopGame();

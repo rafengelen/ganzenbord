@@ -3,7 +3,7 @@
     public class Well : ISquare
     {
         public int Position { get; set; }
-        public Player SkippedPlayer { get; set; }
+        public Player? SkippedPlayer { get; set; }
 
         public void PlayerEntersSquare(Player player)
         {
@@ -13,6 +13,7 @@
             }
             player.KeepSkipping = true;
             SkippedPlayer = player;
+            Game.Instance.GameBoard.Squares[31] = this;
         }
     }
 }

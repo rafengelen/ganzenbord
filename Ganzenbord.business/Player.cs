@@ -7,7 +7,7 @@ namespace Ganzenbord.Business
     {
         private static Random random = new Random();
         public int Position { get; private set; }
-        public int AmountOfSkips { get; private set; } = 0;
+        public int AmountOfSkips { get; set; } = 0;
         public bool KeepSkipping { get; set; } = false;
         public PlayerColor Color { get; private set; } = color;
         public ILogger Logger { get; private set; } = logger;
@@ -81,7 +81,6 @@ namespace Ganzenbord.Business
         public void MoveToPosition(int position)
         {
             Position = position;
-            GetSquare(position);
         }
 
         private void GetSquare(int position)

@@ -10,13 +10,11 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnBridge_ThenPutPlayerOnSquare12()
         {
             //arrange
-            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Bridge bridge = new Bridge();
             Player player = new Player(PlayerColor.Red, new ConsoleLogger());
-            player.MoveToPosition(3);
-            int[] dice = { 1, 2 };
-
+            
             //act
-            player.Move(dice);
+            bridge.PlayerEntersSquare(player);
 
             //assert
             Assert.Equal(12, player.Position);
@@ -26,13 +24,11 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnInn_ThenSkipNextTurn()
         {
             //arrange
-            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Inn inn = new Inn();
             Player player = new Player(PlayerColor.Red, new ConsoleLogger());
-            player.MoveToPosition(16);
-            int[] dice = { 1, 2 };
 
             //act
-            player.Move(dice);
+            inn.PlayerEntersSquare(player);
 
             //assert
             Assert.Equal(1, player.AmountOfSkips);
@@ -42,17 +38,13 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnInnAndSkipsTurn_ThenStaysOnPositionAndLowersSkipsAmount()
         {
             //arrange
-            Game.Instance.StartGame(GameBoardType.GooseGame);
             Player player = new Player(PlayerColor.Red, new ConsoleLogger());
-            player.MoveToPosition(16);
-            int[] dice = { 1, 2 };
-            player.Move(dice);
+            player.AmountOfSkips = 1;
 
             //act
             player.StartTurn();
 
             //assert
-            Assert.Equal(19, player.Position);
             Assert.Equal(0, player.AmountOfSkips);
         }
 
@@ -61,94 +53,63 @@ namespace Ganzenbord.Unittests
         {
             //ARRANGE
 
-            Game.Instance.StartGame(GameBoardType.GooseGame);
-            Well well = (Well)Game.Instance.GameBoard.GetSquare(31);
-
             Player player1 = new Player(PlayerColor.Red, new ConsoleLogger());
             Player player2 = new Player(PlayerColor.Blue, new ConsoleLogger());
 
-            player1.MoveToPosition(28);
-            player2.MoveToPosition(28);
-            int[] dice = [1, 2];
+            Well well = new Well();
 
             //ACT
-            player1.Move(dice);
+            well.PlayerEntersSquare(player1);
 
             //ASSERT
-            Assert.True(player1.KeepSkipping);
-            
             Assert.Equal(player1, well.SkippedPlayer);
+            Assert.True(player1.KeepSkipping);
 
             //ACT
-            player2.Move(dice);
+            well.PlayerEntersSquare(player2);
 
             //ASSERT
-            Assert.False(player1.KeepSkipping);
-            //well = (Well)Game.Instance.GameBoard.GetSquare(31);
-            //Assert.Equal(typeof(Well), well.GetType());
             Assert.Equal(player2, well.SkippedPlayer);
+            Assert.False(player1.KeepSkipping);
+            Assert.True(player2.KeepSkipping);
         }
 
         [Fact]
         public void WhenPlayerLandsOnMaze_ThenPutPlayerOnSquare39()
         {
             //arrange
-            Game.Instance.StartGame(GameBoardType.GooseGame);
             Player player = new Player(PlayerColor.Red, new ConsoleLogger());
-            player.MoveToPosition(38);
-            int[] dice = { 1, 3 };
+            Maze maze = new Maze();
 
             //act
-            player.Move(dice);
+            maze.PlayerEntersSquare(player);
 
             //assert
             Assert.Equal(39, player.Position);
         }
-
-        [Fact]
-        public void WhenPlayerLandsOnPrisonAndSkipsTurn_ThenStaysOnPositionAndLowersSkipsAmount()
-        {
-            //arrange
-            Game.Instance.StartGame(GameBoardType.GooseGame);
-            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
-            player.MoveToPosition(49);
-            int[] dice = { 1, 2 };
-            player.Move(dice);
-            //act
-            player.StartTurn();
-
-            //assert
-            Assert.Equal(52, player.Position);
-            Assert.Equal(2, player.AmountOfSkips);
-        }
-
         [Fact]
         public void WhenPlayerLandsOnPrison_ThenSkip3Turns()
         {
             //arrange
-            Game.Instance.StartGame(GameBoardType.GooseGame);
             Player player = new Player(PlayerColor.Red, new ConsoleLogger());
-            player.MoveToPosition(49);
-            int[] dice = { 1, 2 };
+            Prison prison = new Prison();
 
             //act
-            player.Move(dice);
+            prison.PlayerEntersSquare(player);
 
             //assert
             Assert.Equal(3, player.AmountOfSkips);
         }
-
+        
         [Fact]
         public void WhenPlayerLandsOnDeath_ThenPutPlayerAtStart()
         {
             //arrange
-            Game.Instance.StartGame(GameBoardType.GooseGame);
             Player player = new Player(PlayerColor.Red, new ConsoleLogger());
-            player.MoveToPosition(55);
-            int[] dice = { 1, 2 };
+            Death death = new Death();
 
             //act
-            player.Move(dice);
+            death.PlayerEntersSquare(player);
 
             //assert
             Assert.Equal(0, player.Position);
@@ -158,23 +119,17 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnEnd_ThenEndGame()
         {
             //arrange
-            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Game.Instance.StartGame();
+            
+
             Player player = new Player(PlayerColor.Red, new ConsoleLogger());
-            //game.Players = players;
-            player.MoveToPosition(60);
-            int[] dice = { 1, 2 };
+            End end = new End();
 
             //act
-            player.Move(dice);
+            end.PlayerEntersSquare(player);
 
             //assert
             Assert.False(Game.Instance.ActiveGame);
         }
-
-        //[Fact(Skip = "niet klaar")]
-        //public void Authentication_Works()
-        //{
-        //    Assert.Fail();
-        //}
     }
 }

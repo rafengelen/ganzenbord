@@ -9,7 +9,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerRollsDice_ThenPlayerMoves()
         {
             //arrange
-            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Game.Instance.StartGame();
             Player player = new Player(PlayerColor.Red, new ConsoleLogger());
             player.MoveToPosition(1);
             int[] dice = { 1, 2 };
@@ -25,7 +25,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerMovesFurtherThan63_ThenPlayerWalksRemainingStepsBackwards()
         {
             //arrange
-            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Game.Instance.StartGame();
             Player player = new Player(PlayerColor.Red, new ConsoleLogger());
             player.MoveToPosition(62);
             int[] dice = { 1, 2 };
@@ -41,7 +41,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerRolls5And4InTurn1_ThenGoTo26()
         {
             //ARRANGE
-            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Game.Instance.StartGame();
             Player player = new Player(PlayerColor.Red, new ConsoleLogger());
             player.MoveToPosition(0);
             int[] dice = { 5, 4 };
@@ -57,7 +57,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerRolls5And4InTurn2_ThenNotGoTo26()
         {
             //ARRANGE
-            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Game.Instance.StartGame();
             Player player = new Player(PlayerColor.Red, new ConsoleLogger());
             player.MoveToPosition(0);
             int[] dice = { 5, 4 };
@@ -74,7 +74,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerRolls4And5InTurn1_ThenGoTo26()
         {
             //ARRANGE
-            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Game.Instance.StartGame();
             Player player = new Player(PlayerColor.Red, new ConsoleLogger());
             player.MoveToPosition(0);
             int[] dice = { 4, 5 };
@@ -90,7 +90,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerRolls4And5InTurn2_ThenNotGoTo26()
         {
             //ARRANGE
-            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Game.Instance.StartGame();
             Player player = new Player(PlayerColor.Red, new ConsoleLogger());
             player.MoveToPosition(0);
             int[] dice = { 4, 5 };
@@ -107,7 +107,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerRolls6And3InTurn1_ThenGoTo53()
         {
             //ARRANGE
-            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Game.Instance.StartGame();
             Player player = new Player(PlayerColor.Red, new ConsoleLogger());
             player.MoveToPosition(0);
             int[] dice = [3, 6];
@@ -124,7 +124,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerRolls6And3InTurn2_ThenNotGoTo53()
         {
             //ARRANGE
-            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Game.Instance.StartGame();
             Player player = new Player(PlayerColor.Red, new ConsoleLogger());
             player.MoveToPosition(0);
             int[] dice = [6, 3];
@@ -141,7 +141,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerRolls3And6InTurn1_ThenGoTo53()
         {
             //ARRANGE
-            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Game.Instance.StartGame();
             Player player = new Player(PlayerColor.Red, new ConsoleLogger());
             player.MoveToPosition(0);
             int[] dice = [3, 6];
@@ -157,7 +157,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerRolls3And6InTurn2_ThenNotGoTo53()
         {
             //ARRANGE
-            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Game.Instance.StartGame();
             Player player = new Player(PlayerColor.Red, new ConsoleLogger());
             player.MoveToPosition(0);
             int[] dice = [3, 6];

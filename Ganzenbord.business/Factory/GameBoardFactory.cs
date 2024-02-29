@@ -2,7 +2,7 @@
 
 namespace Ganzenbord.Business.Factory
 {
-    internal class GameBoardFactory
+    public class GameBoardFactory
     {
         public static IGameBoard Create(GameBoardType type)
         {
