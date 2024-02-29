@@ -1,5 +1,4 @@
-﻿using Ganzenbord.Business;
-using Ganzenbord.Business.Factory;
+﻿using Ganzenbord.Business.Factory;
 using Ganzenbord.Business.Squares;
 
 namespace Ganzenbord.Unittests
@@ -28,7 +27,7 @@ namespace Ganzenbord.Unittests
 
             SquareFactory squareFactory = new SquareFactory();
             //ACT
-            ISquare square = squareFactory.Create(inn,1);
+            ISquare square = squareFactory.Create(inn, 1);
 
             //ASSERT
 
@@ -42,7 +41,7 @@ namespace Ganzenbord.Unittests
             SquareType death = SquareType.Death;
             SquareFactory squareFactory = new SquareFactory();
             //ACT
-            ISquare square = squareFactory.Create(death,1);
+            ISquare square = squareFactory.Create(death, 1);
 
             //ASSERT
 
@@ -56,7 +55,7 @@ namespace Ganzenbord.Unittests
             SquareType end = SquareType.End;
             SquareFactory squareFactory = new SquareFactory();
             //ACT
-            ISquare square = squareFactory.Create(end,1);
+            ISquare square = squareFactory.Create(end, 1);
 
             //ASSERT
 
@@ -84,7 +83,7 @@ namespace Ganzenbord.Unittests
             SquareType prison = SquareType.Prison;
             SquareFactory squareFactory = new SquareFactory();
             //ACT
-            ISquare square = squareFactory.Create(prison,1);
+            ISquare square = squareFactory.Create(prison, 1);
 
             //ASSERT
 
@@ -99,7 +98,7 @@ namespace Ganzenbord.Unittests
 
             SquareFactory squareFactory = new SquareFactory();
             //ACT
-            ISquare square = squareFactory.Create(staticSquare,1);
+            ISquare square = squareFactory.Create(staticSquare, 1);
 
             //ASSERT
 
@@ -114,7 +113,7 @@ namespace Ganzenbord.Unittests
 
             SquareFactory squareFactory = new SquareFactory();
             //ACT
-            ISquare square = squareFactory.Create(well,1);
+            ISquare square = squareFactory.Create(well, 1);
 
             //ASSERT
 

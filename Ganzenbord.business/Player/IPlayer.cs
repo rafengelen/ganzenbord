@@ -12,9 +12,13 @@ namespace Ganzenbord.Business.Player
         int Position { get; }
 
         void Move(int[] dice);
+
         void MoveToPosition(int position);
+
         int[] RollDice(int amountOfDice);
+
         void StartTurn();
+
         void TurnsToSkip(int amountOfSkips);
     }
 }

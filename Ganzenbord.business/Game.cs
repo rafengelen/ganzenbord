@@ -1,6 +1,5 @@
 ﻿using Ganzenbord.Business.Factory;
 using Ganzenbord.Business.GameBoard;
-using Ganzenbord.Business.Logger;
 
 namespace Ganzenbord.Business
 {
@@ -9,6 +8,7 @@ namespace Ganzenbord.Business
         private static Game _Instance;
         public bool ActiveGame { get; set; } = false;
         public int Turn { get; set; } = 1;
+
         //public Player[] Players { get; set; }
         //
         public IGameBoard GameBoard { get; set; }

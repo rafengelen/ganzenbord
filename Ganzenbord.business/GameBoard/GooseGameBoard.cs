@@ -25,7 +25,6 @@ namespace Ganzenbord.Business.GameBoard
             SetupGameBoard();
         }
 
-
         internal void SetupGameBoard()
         {
             ISquare[] squares = new ISquare[64];

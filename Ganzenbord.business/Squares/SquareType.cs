@@ -1,4 +1,4 @@
-﻿namespace Ganzenbord.Business
+﻿namespace Ganzenbord.Business.Squares
 {
     public enum SquareType
     {

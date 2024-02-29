@@ -93,6 +93,7 @@ namespace Ganzenbord.Unittests
             //assert
             Assert.Equal(39, player.Position);
         }
+
         [Fact]
         public void WhenPlayerLandsOnPrison_ThenSkip3Turns()
         {
@@ -107,7 +108,7 @@ namespace Ganzenbord.Unittests
             //assert
             Assert.Equal(3, player.AmountOfSkips);
         }
-        
+
         [Fact]
         public void WhenPlayerLandsOnDeath_ThenPutPlayerAtStart()
         {

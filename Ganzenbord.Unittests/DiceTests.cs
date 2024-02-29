@@ -10,7 +10,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerRolls2Dice_ThenGetDiceRollArrayOfLength2()
         {
             //ARRANGE
-            Mock<ILogger> mockLogger = new Mock<ILogger>(); 
+            Mock<ILogger> mockLogger = new Mock<ILogger>();
             Player player = new Player(PlayerColor.Red, mockLogger.Object);
 
             //ACT
@@ -19,6 +19,7 @@ namespace Ganzenbord.Unittests
             //ASSERT
             Assert.Equal(2, diceRolls.Length);
         }
+
         // biedt geen meerwaarde, niet fout, maar gaan we niet testen
         /*
         [Fact]

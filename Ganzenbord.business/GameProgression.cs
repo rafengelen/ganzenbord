@@ -1,12 +1,12 @@
 ﻿using Ganzenbord.Business.Logger;
 using Ganzenbord.Business.Player;
+
 namespace Ganzenbord.Business
 {
     public class GameProgression
     {
         private ILogger logger;
         public IPlayer[] Players { get; private set; }
-
 
         public GameProgression(ILogger logger)
         {
@@ -27,7 +27,6 @@ namespace Ganzenbord.Business
             {
                 logger.Log($"{player.Color}: {player.Position}");
             }
-            
         }
 
         public void PlayRound(IPlayer[] players)
@@ -42,7 +41,6 @@ namespace Ganzenbord.Business
                 }
                 player.StartTurn();
                 logger.Log($"{player.Color}: {player.Position}\n");
-                
             }
             Game.Instance.Turn++;
         }
