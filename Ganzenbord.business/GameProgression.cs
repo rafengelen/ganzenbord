@@ -1,11 +1,11 @@
 ﻿using Ganzenbord.Business.Logger;
-
+using Ganzenbord.Business.Player;
 namespace Ganzenbord.Business
 {
     public class GameProgression
     {
         private ILogger logger;
-        public Player[] Players { get; private set; }
+        public IPlayer[] Players { get; private set; }
 
 
         public GameProgression(ILogger logger)
@@ -13,7 +13,7 @@ namespace Ganzenbord.Business
             this.logger = logger;
         }
 
-        public void StartGame(Player[] players)
+        public void StartGame(IPlayer[] players)
         {
             Players = players;
 
@@ -23,27 +23,34 @@ namespace Ganzenbord.Business
                 PlayRound(Players);
             }
             logger.Log("End Results: ");
-            foreach (Player player in Players)
+            foreach (IPlayer player in Players)
             {
                 logger.Log($"{player.Color}: {player.Position}");
             }
-            StopGame();
+            
         }
 
-        public void PlayRound(Player[] players)
+        public void PlayRound(IPlayer[] players)
         {
             logger.Log($"Start round: {Game.Instance.Turn}");
-            foreach (Player player in players)
+            foreach (IPlayer player in players)
             {
+                if (player.IsWinner)
+                {
+                    StopGame();
+                    break;
+                }
                 player.StartTurn();
                 logger.Log($"{player.Color}: {player.Position}\n");
+                
             }
             Game.Instance.Turn++;
         }
 
         public void StopGame()
         {
-            Game.Instance.StopGame();
+            Game.Instance.ActiveGame = false;
+            //Game.Instance.Ac; Met winnaar aanduiden dat het spel gedaan is
             logger.Log("The game has ended.");
         }
     }

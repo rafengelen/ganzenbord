@@ -4,36 +4,37 @@ namespace Ganzenbord.Business.Factory
 {
     public class SquareFactory
     {
-        public static ISquare Create(SquareType squareType)
+        //zo min mogelijk static -> gaat tegen OO en dependancy injection in
+        public ISquare Create(SquareType squareType, int position)
         {
             switch (squareType)
             {
                 case SquareType.Static:
-                    return new Static();
+                    return new Static(position);
 
                 case SquareType.Maze:
-                    return new Maze();
+                    return new Maze(position);
 
                 case SquareType.End:
-                    return new End();
+                    return new End(position);
 
                 case SquareType.Inn:
-                    return new Inn();
+                    return new Inn(position);
 
                 case SquareType.Death:
-                    return new Death();
+                    return new Death(position);
 
                 case SquareType.Prison:
-                    return new Prison();
+                    return new Prison(position);
 
                 case SquareType.Well:
-                    return new Well();
+                    return new Well(position);
 
                 case SquareType.Bridge:
-                    return new Bridge();
+                    return new Bridge(position);
 
                 default:
-                    return new Static();
+                    return new Static(position);
             }
         }
     }

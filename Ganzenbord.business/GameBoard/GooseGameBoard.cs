@@ -6,6 +6,7 @@ namespace Ganzenbord.Business.GameBoard
     public class GooseGameBoard : IGameBoard
     {
         public ISquare[] Squares { get; set; }
+        private SquareFactory squareFactory;
 
         private readonly Dictionary<int, SquareType> SpecialSquares = new Dictionary<int, SquareType>
             {
@@ -18,15 +19,17 @@ namespace Ganzenbord.Business.GameBoard
                 { 63, SquareType.End }
             };
 
-        public GooseGameBoard()
+        public GooseGameBoard(SquareFactory factory)
         {
+            squareFactory = factory;
             SetupGameBoard();
         }
+
 
         internal void SetupGameBoard()
         {
             ISquare[] squares = new ISquare[64];
-
+            //andere manier if specialSquares.contains(i)
             for (int i = 0; i < 64; i++)
             {
                 squares[i] = AddSquare(i);
@@ -36,18 +39,18 @@ namespace Ganzenbord.Business.GameBoard
 
         public ISquare GetSquare(int position)
         {
-            return Squares[position];
+            return Squares.Single(item => item.Position == position);
         }
 
         private ISquare AddSquare(int position)
         {
             if (SpecialSquares.TryGetValue(position, out SquareType value))
             {
-                return SquareFactory.Create(value);
+                return squareFactory.Create(value, position);
             }
             else
             {
-                return SquareFactory.Create(SquareType.Static);
+                return squareFactory.Create(SquareType.Static, position);
             }
         }
     }

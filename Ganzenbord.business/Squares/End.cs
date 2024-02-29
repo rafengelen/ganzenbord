@@ -1,13 +1,19 @@
-﻿namespace Ganzenbord.Business.Squares
+﻿using Ganzenbord.Business.Player;
+
+namespace Ganzenbord.Business.Squares
 {
     public class End : ISquare
     {
+        public End(int position)
+        {
+            Position = position;
+        }
+
         public int Position { get; set; }
 
-        public void PlayerEntersSquare(Player player)
+        public void PlayerEntersSquare(IPlayer player)
         {
-            Game.Instance.StopGame();
-            Game.Instance.ActiveGame =false;
+            player.IsWinner = true;
         }
     }
 }

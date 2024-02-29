@@ -6,13 +6,14 @@ namespace Ganzenbord.Business.Factory
     {
         public static IGameBoard Create(GameBoardType type)
         {
+            SquareFactory factory = new SquareFactory();
             switch (type)
             {
                 case GameBoardType.GooseGame:
-                    return new GooseGameBoard();
+                    return new GooseGameBoard(factory);
 
                 default:
-                    return new GooseGameBoard();
+                    return new GooseGameBoard(factory);
             }
         }
     }

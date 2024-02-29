@@ -1,5 +1,7 @@
 using Ganzenbord.Business;
 using Ganzenbord.Business.Logger;
+using Ganzenbord.Business.Player;
+using Moq;
 
 namespace Ganzenbord.Unittests
 {
@@ -10,7 +12,8 @@ namespace Ganzenbord.Unittests
         {
             //arrange
             Game.Instance.StartGame();
-            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
+            Mock<ILogger> logger = new Mock<ILogger>();
+            Player player = new Player(PlayerColor.Red, logger.Object);
             player.MoveToPosition(1);
             int[] dice = { 1, 2 };
 
@@ -26,7 +29,8 @@ namespace Ganzenbord.Unittests
         {
             //arrange
             Game.Instance.StartGame();
-            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
+            Mock<ILogger> logger = new Mock<ILogger>();
+            Player player = new Player(PlayerColor.Red, logger.Object);
             player.MoveToPosition(62);
             int[] dice = { 1, 2 };
 
@@ -42,7 +46,8 @@ namespace Ganzenbord.Unittests
         {
             //ARRANGE
             Game.Instance.StartGame();
-            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
+            Mock<ILogger> logger = new Mock<ILogger>();
+            Player player = new Player(PlayerColor.Red, logger.Object);
             player.MoveToPosition(0);
             int[] dice = { 5, 4 };
 
@@ -58,7 +63,8 @@ namespace Ganzenbord.Unittests
         {
             //ARRANGE
             Game.Instance.StartGame();
-            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
+            Mock<ILogger> logger = new Mock<ILogger>();
+            Player player = new Player(PlayerColor.Red, logger.Object);
             player.MoveToPosition(0);
             int[] dice = { 5, 4 };
             Game.Instance.Turn = 2;
@@ -75,7 +81,8 @@ namespace Ganzenbord.Unittests
         {
             //ARRANGE
             Game.Instance.StartGame();
-            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
+            Mock<ILogger> logger = new Mock<ILogger>();
+            Player player = new Player(PlayerColor.Red, logger.Object);
             player.MoveToPosition(0);
             int[] dice = { 4, 5 };
 
@@ -91,7 +98,8 @@ namespace Ganzenbord.Unittests
         {
             //ARRANGE
             Game.Instance.StartGame();
-            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
+            Mock<ILogger> logger = new Mock<ILogger>();
+            Player player = new Player(PlayerColor.Red, logger.Object);
             player.MoveToPosition(0);
             int[] dice = { 4, 5 };
             Game.Instance.Turn = 2;
@@ -108,7 +116,8 @@ namespace Ganzenbord.Unittests
         {
             //ARRANGE
             Game.Instance.StartGame();
-            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
+            Mock<ILogger> logger = new Mock<ILogger>();
+            Player player = new Player(PlayerColor.Red, logger.Object);
             player.MoveToPosition(0);
             int[] dice = [3, 6];
             //Game.Instance.Turn = 1;
@@ -125,7 +134,8 @@ namespace Ganzenbord.Unittests
         {
             //ARRANGE
             Game.Instance.StartGame();
-            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
+            Mock<ILogger> logger = new Mock<ILogger>();
+            Player player = new Player(PlayerColor.Red, logger.Object);
             player.MoveToPosition(0);
             int[] dice = [6, 3];
             Game.Instance.Turn = 2;
@@ -142,7 +152,8 @@ namespace Ganzenbord.Unittests
         {
             //ARRANGE
             Game.Instance.StartGame();
-            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
+            Mock<ILogger> logger = new Mock<ILogger>();
+            Player player = new Player(PlayerColor.Red, logger.Object);
             player.MoveToPosition(0);
             int[] dice = [3, 6];
 
@@ -158,7 +169,8 @@ namespace Ganzenbord.Unittests
         {
             //ARRANGE
             Game.Instance.StartGame();
-            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
+            Mock<ILogger> logger = new Mock<ILogger>();
+            Player player = new Player(PlayerColor.Red, logger.Object);
             player.MoveToPosition(0);
             int[] dice = [3, 6];
             Game.Instance.Turn = 2;

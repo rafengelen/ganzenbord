@@ -1,9 +1,9 @@
 ﻿using Ganzenbord.Business.Logger;
 using Ganzenbord.Business.Squares;
 
-namespace Ganzenbord.Business
+namespace Ganzenbord.Business.Player
 {
-    public class Player(PlayerColor color, ILogger logger)
+    public class Player(PlayerColor color, ILogger logger) : IPlayer
     {
         private static Random random = new Random();
         public int Position { get; private set; }
@@ -11,6 +11,7 @@ namespace Ganzenbord.Business
         public bool KeepSkipping { get; set; } = false;
         public PlayerColor Color { get; private set; } = color;
         public ILogger Logger { get; private set; } = logger;
+        public bool IsWinner { get; set; }
 
         public void StartTurn()
         {
@@ -46,12 +47,13 @@ namespace Ganzenbord.Business
             Position = CalculatePosition(dice);
 
             Logger.Log($"{Color} lands on position {Position}");
-            GetSquare(Position);
+            HandleSquare(Position);
         }
 
-        internal int CalculatePosition(int[] dice)
+        private int CalculatePosition(int[] dice)
         {
             int position;
+            //TODO turn1 moet in game klasse komen
             if (Game.Instance.Turn == 1 && dice.Sum() == 9 && dice.Length == 2)
             {
                 if (dice.Contains(6))
@@ -70,6 +72,8 @@ namespace Ganzenbord.Business
 
             if (position > 63)
             {
+                //Gameboard.count
+                //terugkijken naar hoeveel te veel, dynamisch
                 return 126 - position;
             }
             else
@@ -83,14 +87,14 @@ namespace Ganzenbord.Business
             Position = position;
         }
 
-        private void GetSquare(int position)
+        private void HandleSquare(int position)
         {
             ISquare square = Game.Instance.GameBoard.GetSquare(position);
             Logger.Log($"{Color} current square: {square.GetType().Name}");
             square.PlayerEntersSquare(this);
         }
 
-        internal void TurnsToSkip(int amountOfSkips)
+        public void TurnsToSkip(int amountOfSkips)
         {
             AmountOfSkips = amountOfSkips;
         }

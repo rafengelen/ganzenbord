@@ -1,9 +1,11 @@
-﻿namespace Ganzenbord.Business.Squares
+﻿using Ganzenbord.Business.Player;
+
+namespace Ganzenbord.Business.Squares
 {
     public interface ISquare
     {
         int Position { get; set; }
 
-        void PlayerEntersSquare(Player player);
+        void PlayerEntersSquare(IPlayer player);
     }
 }

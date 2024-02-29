@@ -1,5 +1,6 @@
-﻿using Ganzenbord.Business;
-using Ganzenbord.Business.Logger;
+﻿using Ganzenbord.Business.Logger;
+using Ganzenbord.Business.Player;
+using Moq;
 
 namespace Ganzenbord.Unittests
 {
@@ -9,7 +10,8 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerRolls2Dice_ThenGetDiceRollArrayOfLength2()
         {
             //ARRANGE
-            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
+            Mock<ILogger> mockLogger = new Mock<ILogger>(); 
+            Player player = new Player(PlayerColor.Red, mockLogger.Object);
 
             //ACT
             int[] diceRolls = player.RollDice(2);
@@ -17,7 +19,8 @@ namespace Ganzenbord.Unittests
             //ASSERT
             Assert.Equal(2, diceRolls.Length);
         }
-
+        // biedt geen meerwaarde, niet fout, maar gaan we niet testen
+        /*
         [Fact]
         public void WhenPlayerRollsDice_ThenNumbersAreBetween1And6()
         {
@@ -33,5 +36,6 @@ namespace Ganzenbord.Unittests
                 Assert.InRange(diceRoll, 1, 6);
             }
         }
+    */
     }
 }

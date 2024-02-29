@@ -1,6 +1,7 @@
-﻿using Ganzenbord.Business;
-using Ganzenbord.Business.Logger;
+﻿using Ganzenbord.Business.Logger;
+using Ganzenbord.Business.Player;
 using Ganzenbord.Business.Squares;
+using Moq;
 
 namespace Ganzenbord.Unittests
 {
@@ -10,9 +11,10 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnBridge_ThenPutPlayerOnSquare12()
         {
             //arrange
-            Bridge bridge = new Bridge();
-            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
-            
+            Bridge bridge = new Bridge(6);
+            Mock<ILogger> logger = new Mock<ILogger>();
+            IPlayer player = new Player(PlayerColor.Red, logger.Object);
+
             //act
             bridge.PlayerEntersSquare(player);
 
@@ -24,8 +26,9 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnInn_ThenSkipNextTurn()
         {
             //arrange
-            Inn inn = new Inn();
-            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
+            Inn inn = new Inn(19);
+            Mock<ILogger> logger = new Mock<ILogger>();
+            Player player = new Player(PlayerColor.Red, logger.Object);
 
             //act
             inn.PlayerEntersSquare(player);
@@ -38,7 +41,8 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnInnAndSkipsTurn_ThenStaysOnPositionAndLowersSkipsAmount()
         {
             //arrange
-            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
+            Mock<ILogger> logger = new Mock<ILogger>();
+            Player player = new Player(PlayerColor.Red, logger.Object);
             player.AmountOfSkips = 1;
 
             //act
@@ -53,10 +57,11 @@ namespace Ganzenbord.Unittests
         {
             //ARRANGE
 
-            Player player1 = new Player(PlayerColor.Red, new ConsoleLogger());
-            Player player2 = new Player(PlayerColor.Blue, new ConsoleLogger());
+            Mock<ILogger> logger = new Mock<ILogger>();
+            Player player1 = new Player(PlayerColor.Red, logger.Object);
+            Player player2 = new Player(PlayerColor.Blue, logger.Object);
 
-            Well well = new Well();
+            Well well = new Well(31);
 
             //ACT
             well.PlayerEntersSquare(player1);
@@ -78,8 +83,9 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnMaze_ThenPutPlayerOnSquare39()
         {
             //arrange
-            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
-            Maze maze = new Maze();
+            Mock<ILogger> logger = new Mock<ILogger>();
+            Player player = new Player(PlayerColor.Red, logger.Object);
+            Maze maze = new Maze(42);
 
             //act
             maze.PlayerEntersSquare(player);
@@ -91,8 +97,9 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnPrison_ThenSkip3Turns()
         {
             //arrange
-            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
-            Prison prison = new Prison();
+            Mock<ILogger> logger = new Mock<ILogger>();
+            Player player = new Player(PlayerColor.Red, logger.Object);
+            Prison prison = new Prison(52);
 
             //act
             prison.PlayerEntersSquare(player);
@@ -105,8 +112,9 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnDeath_ThenPutPlayerAtStart()
         {
             //arrange
-            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
-            Death death = new Death();
+            Mock<ILogger> logger = new Mock<ILogger>();
+            Player player = new Player(PlayerColor.Red, logger.Object);
+            Death death = new Death(58);
 
             //act
             death.PlayerEntersSquare(player);
@@ -119,17 +127,15 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnEnd_ThenEndGame()
         {
             //arrange
-            Game.Instance.StartGame();
-            
-
-            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
-            End end = new End();
+            Mock<ILogger> logger = new Mock<ILogger>();
+            Player player = new Player(PlayerColor.Red, logger.Object);
+            End end = new End(63);
 
             //act
             end.PlayerEntersSquare(player);
 
             //assert
-            Assert.False(Game.Instance.ActiveGame);
+            Assert.True(player.IsWinner);
         }
     }
 }

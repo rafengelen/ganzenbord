@@ -1,7 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using Ganzenbord;
 using Ganzenbord.Business;
 using Ganzenbord.Business.Logger;
+using Ganzenbord.Business.Player;
 
 ILogger logger = new ConsoleLogger();
 GameProgression game = new GameProgression(logger);

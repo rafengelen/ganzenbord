@@ -11,9 +11,9 @@ namespace Ganzenbord.Unittests
         {
             //ARRANGE
             SquareType bridge = SquareType.Bridge;
-
+            SquareFactory squareFactory = new SquareFactory();
             //ACT
-            ISquare square = SquareFactory.Create(bridge);
+            ISquare square = squareFactory.Create(bridge, 6);
 
             //ASSERT
 
@@ -26,8 +26,9 @@ namespace Ganzenbord.Unittests
             //ARRANGE
             SquareType inn = SquareType.Inn;
 
+            SquareFactory squareFactory = new SquareFactory();
             //ACT
-            ISquare square = SquareFactory.Create(inn);
+            ISquare square = squareFactory.Create(inn,1);
 
             //ASSERT
 
@@ -39,9 +40,9 @@ namespace Ganzenbord.Unittests
         {
             //ARRANGE
             SquareType death = SquareType.Death;
-
+            SquareFactory squareFactory = new SquareFactory();
             //ACT
-            ISquare square = SquareFactory.Create(death);
+            ISquare square = squareFactory.Create(death,1);
 
             //ASSERT
 
@@ -53,9 +54,9 @@ namespace Ganzenbord.Unittests
         {
             //ARRANGE
             SquareType end = SquareType.End;
-
+            SquareFactory squareFactory = new SquareFactory();
             //ACT
-            ISquare square = SquareFactory.Create(end);
+            ISquare square = squareFactory.Create(end,1);
 
             //ASSERT
 
@@ -67,9 +68,9 @@ namespace Ganzenbord.Unittests
         {
             //ARRANGE
             SquareType maze = SquareType.Maze;
-
+            SquareFactory squareFactory = new SquareFactory();
             //ACT
-            ISquare square = SquareFactory.Create(maze);
+            ISquare square = squareFactory.Create(maze, 1);
 
             //ASSERT
 
@@ -81,9 +82,9 @@ namespace Ganzenbord.Unittests
         {
             //ARRANGE
             SquareType prison = SquareType.Prison;
-
+            SquareFactory squareFactory = new SquareFactory();
             //ACT
-            ISquare square = SquareFactory.Create(prison);
+            ISquare square = squareFactory.Create(prison,1);
 
             //ASSERT
 
@@ -96,8 +97,9 @@ namespace Ganzenbord.Unittests
             //ARRANGE
             SquareType staticSquare = SquareType.Static;
 
+            SquareFactory squareFactory = new SquareFactory();
             //ACT
-            ISquare square = SquareFactory.Create(staticSquare);
+            ISquare square = squareFactory.Create(staticSquare,1);
 
             //ASSERT
 
@@ -110,8 +112,9 @@ namespace Ganzenbord.Unittests
             //ARRANGE
             SquareType well = SquareType.Well;
 
+            SquareFactory squareFactory = new SquareFactory();
             //ACT
-            ISquare square = SquareFactory.Create(well);
+            ISquare square = squareFactory.Create(well,1);
 
             //ASSERT
 
