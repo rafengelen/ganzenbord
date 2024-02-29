@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ganzenbord.Business;
+﻿using Ganzenbord.Business;
 using Ganzenbord.Business.Factory;
 using Ganzenbord.Business.Squares;
+
 namespace Ganzenbord.Unittests
 {
     public class SquareFactoryTest
     {
-
         [Fact]
         public void WhenTypeIsBridge_ThenCreateBridgeSquare()
         {
@@ -21,7 +16,7 @@ namespace Ganzenbord.Unittests
             ISquare square = SquareFactory.Create(bridge);
 
             //ASSERT
-            
+
             Assert.Equal(typeof(Bridge), square.GetType());
         }
 
@@ -38,6 +33,7 @@ namespace Ganzenbord.Unittests
 
             Assert.Equal(typeof(Inn), square.GetType());
         }
+
         [Fact]
         public void WhenTypeIsDeath_ThenCreateDeathSquare()
         {
@@ -51,6 +47,7 @@ namespace Ganzenbord.Unittests
 
             Assert.Equal(typeof(Death), square.GetType());
         }
+
         [Fact]
         public void WhenTypeIsEnd_ThenCreateEndSquare()
         {
@@ -64,6 +61,7 @@ namespace Ganzenbord.Unittests
 
             Assert.Equal(typeof(End), square.GetType());
         }
+
         [Fact]
         public void WhenTypeIsMaze_ThenCreateMazeSquare()
         {
@@ -77,6 +75,7 @@ namespace Ganzenbord.Unittests
 
             Assert.Equal(typeof(Maze), square.GetType());
         }
+
         [Fact]
         public void WhenTypeIsPrison_ThenCreatePrisonSquare()
         {
@@ -90,6 +89,7 @@ namespace Ganzenbord.Unittests
 
             Assert.Equal(typeof(Prison), square.GetType());
         }
+
         [Fact]
         public void WhenTypeIsStatic_ThenCreateStaticSquare()
         {
@@ -103,6 +103,7 @@ namespace Ganzenbord.Unittests
 
             Assert.Equal(typeof(Static), square.GetType());
         }
+
         [Fact]
         public void WhenTypeIsWell_ThenCreateWellSquare()
         {

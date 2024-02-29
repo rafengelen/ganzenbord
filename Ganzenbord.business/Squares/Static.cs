@@ -1,6 +1,4 @@
-﻿using Ganzenbord.Business.Logger;
-
-namespace Ganzenbord.Business.Squares
+﻿namespace Ganzenbord.Business.Squares
 {
     public class Static : ISquare
     {

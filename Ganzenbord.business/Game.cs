@@ -1,4 +1,6 @@
-﻿
+﻿using Ganzenbord.Business.Factory;
+using Ganzenbord.Business.GameBoard;
+using Ganzenbord.Business.Logger;
 
 namespace Ganzenbord.Business
 {
@@ -8,9 +10,13 @@ namespace Ganzenbord.Business
         public bool ActiveGame { get; private set; } = false;
         public int Turn { get; set; } = 1;
         public Player[] Players { get; set; }
-        public GameBoard GameBoard { get; set; }
-        private Game()
-        { }
+        public IGameBoard GameBoard { get; set; }
+        private ILogger logger;
+
+        private Game(ConsoleLogger logger)
+        {
+            this.logger = logger;
+        }
 
         public static Game Instance
         {
@@ -18,30 +24,23 @@ namespace Ganzenbord.Business
             {
                 if (_Instance == null)
                 {
-                    _Instance = new Game();
+                    _Instance = new Game(new ConsoleLogger());
                 }
                 return _Instance;
             }
         }
 
-        public void PlayRound(Player[] players)
-        {
-            foreach (Player player in players)
-            {
-                player.StartTurn();
-            }
-            Turn++;
-        }
+        
 
         public void StopGame()
         {
             ActiveGame = false;
         }
 
-        public void StartGame()
+        public void StartGame(GameBoardType type)
         {
             Turn = 1;
-            GameBoard = new GameBoard();
+            GameBoard = GameBoardFactory.Create(type);
             ActiveGame = true;
         }
     }

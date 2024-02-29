@@ -1,4 +1,5 @@
 ﻿using Ganzenbord.Business;
+using Ganzenbord.Business.Logger;
 
 namespace Ganzenbord.Unittests
 {
@@ -8,7 +9,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerRolls2Dice_ThenGetDiceRollArrayOfLength2()
         {
             //ARRANGE
-            Player player = new Player();
+            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
 
             //ACT
             int[] diceRolls = player.RollDice(2);
@@ -21,7 +22,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerRollsDice_ThenNumbersAreBetween1And6()
         {
             //ARRANGE
-            Player player = new Player();
+            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
 
             //ACT
             int[] diceRolls = player.RollDice(20);

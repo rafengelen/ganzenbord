@@ -1,34 +1,46 @@
 ﻿using Ganzenbord.Business.Logger;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ganzenbord.Business
 {
     public class GameProgression
     {
-        ILogger logger;
+        private ILogger logger;
         public Player[] Players { get; private set; }
+
         public GameProgression(ILogger logger)
         {
             this.logger = logger;
         }
-        public void StartGame(Player[] players)
+
+        public void StartGame(Player[] players, GameBoardType type)
         {
             Players = players;
-            Game.Instance.StartGame();
+            Game.Instance.StartGame(type);
             while (Game.Instance.ActiveGame)
             {
-                Game.Instance.PlayRound(Players);
+                PlayRound(Players);
             }
+            logger.Log("End Results: ");
+            foreach (Player player in Players)
+            {
+                logger.Log($"player: {player.Position}");
+            }
+            StopGame();
+        }
+        public void PlayRound(Player[] players)
+        {
+            logger.Log($"Start round: {Game.Instance.Turn}");
+            foreach (Player player in players)
+            {
+                player.StartTurn();
+                logger.Log($"{player.Color}: {player.Position}\n");
+            }
+            Game.Instance.Turn++;
         }
         public void StopGame()
         {
             Game.Instance.StopGame();
             logger.Log("The game has ended.");
         }
-
     }
 }

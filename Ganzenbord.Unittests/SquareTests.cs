@@ -1,4 +1,5 @@
 ﻿using Ganzenbord.Business;
+using Ganzenbord.Business.Logger;
 using Ganzenbord.Business.Squares;
 
 namespace Ganzenbord.Unittests
@@ -9,8 +10,8 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnBridge_ThenPutPlayerOnSquare12()
         {
             //arrange
-            Game.Instance.StartGame();
-            Player player = new Player();
+            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
             player.MoveToPosition(3);
             int[] dice = { 1, 2 };
 
@@ -25,11 +26,10 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnInn_ThenSkipNextTurn()
         {
             //arrange
-            Game.Instance.StartGame();
-            Player player = new Player();
+            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
             player.MoveToPosition(16);
             int[] dice = { 1, 2 };
-
 
             //act
             player.Move(dice);
@@ -37,12 +37,13 @@ namespace Ganzenbord.Unittests
             //assert
             Assert.Equal(1, player.AmountOfSkips);
         }
+
         [Fact]
         public void WhenPlayerLandsOnInnAndSkipsTurn_ThenStaysOnPositionAndLowersSkipsAmount()
         {
             //arrange
-            Game.Instance.StartGame();
-            Player player = new Player();
+            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
             player.MoveToPosition(16);
             int[] dice = { 1, 2 };
             player.Move(dice);
@@ -55,26 +56,27 @@ namespace Ganzenbord.Unittests
             Assert.Equal(0, player.AmountOfSkips);
         }
 
-
         [Fact]
         public void WhenPlayerLandsOnWell_ThenSkipUntilAnotherPlayerArrives()
         {
             //ARRANGE
-            Game.Instance.StartGame();
 
-            Player player1 = new Player();
-            Player player2 = new Player();
+            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Well well = (Well)Game.Instance.GameBoard.GetSquare(31);
+
+            Player player1 = new Player(PlayerColor.Red, new ConsoleLogger());
+            Player player2 = new Player(PlayerColor.Blue, new ConsoleLogger());
 
             player1.MoveToPosition(28);
             player2.MoveToPosition(28);
-            int[] dice = { 1, 2 };
+            int[] dice = [1, 2];
 
             //ACT
             player1.Move(dice);
 
             //ASSERT
             Assert.True(player1.KeepSkipping);
-            Well well = (Well)Game.Instance.GameBoard.GetSquare(31);
+            
             Assert.Equal(player1, well.SkippedPlayer);
 
             //ACT
@@ -82,7 +84,8 @@ namespace Ganzenbord.Unittests
 
             //ASSERT
             Assert.False(player1.KeepSkipping);
-            well = (Well)Game.Instance.GameBoard.GetSquare(31);
+            //well = (Well)Game.Instance.GameBoard.GetSquare(31);
+            //Assert.Equal(typeof(Well), well.GetType());
             Assert.Equal(player2, well.SkippedPlayer);
         }
 
@@ -90,8 +93,8 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnMaze_ThenPutPlayerOnSquare39()
         {
             //arrange
-            Game.Instance.StartGame();
-            Player player = new Player();
+            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
             player.MoveToPosition(38);
             int[] dice = { 1, 3 };
 
@@ -103,11 +106,11 @@ namespace Ganzenbord.Unittests
         }
 
         [Fact]
-        public void WhenPlayerLandsOnPrisoAndSkipsTurn_ThenStaysOnPositionAndLowersSkipsAmount()
+        public void WhenPlayerLandsOnPrisonAndSkipsTurn_ThenStaysOnPositionAndLowersSkipsAmount()
         {
             //arrange
-            Game.Instance.StartGame();
-            Player player = new Player();
+            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
             player.MoveToPosition(49);
             int[] dice = { 1, 2 };
             player.Move(dice);
@@ -118,12 +121,13 @@ namespace Ganzenbord.Unittests
             Assert.Equal(52, player.Position);
             Assert.Equal(2, player.AmountOfSkips);
         }
+
         [Fact]
         public void WhenPlayerLandsOnPrison_ThenSkip3Turns()
         {
             //arrange
-            Game.Instance.StartGame();
-            Player player = new Player();
+            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
             player.MoveToPosition(49);
             int[] dice = { 1, 2 };
 
@@ -138,8 +142,8 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnDeath_ThenPutPlayerAtStart()
         {
             //arrange
-            Game.Instance.StartGame();
-            Player player = new Player();
+            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
             player.MoveToPosition(55);
             int[] dice = { 1, 2 };
 
@@ -154,8 +158,8 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnEnd_ThenEndGame()
         {
             //arrange
-            Game.Instance.StartGame();
-            Player player = new Player();
+            Game.Instance.StartGame(GameBoardType.GooseGame);
+            Player player = new Player(PlayerColor.Red, new ConsoleLogger());
             //game.Players = players;
             player.MoveToPosition(60);
             int[] dice = { 1, 2 };
@@ -165,7 +169,6 @@ namespace Ganzenbord.Unittests
 
             //assert
             Assert.False(Game.Instance.ActiveGame);
-            
         }
 
         //[Fact(Skip = "niet klaar")]

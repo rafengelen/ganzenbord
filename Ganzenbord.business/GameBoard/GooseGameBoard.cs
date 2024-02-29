@@ -1,17 +1,13 @@
 ﻿using Ganzenbord.Business.Factory;
 using Ganzenbord.Business.Squares;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Ganzenbord.Business
+namespace Ganzenbord.Business.GameBoard
 {
-    public class GameBoard
+    public class GooseGameBoard : IGameBoard
     {
-        private ISquare[] Squares { get; set; }
-        Dictionary<int, SquareType> specialSquares = new Dictionary<int, SquareType>
+        public ISquare[] Squares { get; set; }
+
+        private readonly Dictionary<int, SquareType> SpecialSquares = new Dictionary<int, SquareType>
             {
                 { 6, SquareType.Bridge },
                 { 19, SquareType.Inn },
@@ -21,30 +17,32 @@ namespace Ganzenbord.Business
                 { 58, SquareType.Death },
                 { 63, SquareType.End }
             };
-        public GameBoard()
+
+        public GooseGameBoard()
         {
             SetupGameBoard();
         }
+
         internal void SetupGameBoard()
         {
             ISquare[] squares = new ISquare[64];
 
             for (int i = 0; i < 64; i++)
             {
-                squares[i] = addSquare(i);
+                squares[i] = AddSquare(i);
             }
             Squares = squares;
         }
+
         public ISquare GetSquare(int position)
         {
             return Squares[position];
         }
-        
-        private ISquare addSquare(int position)
-        {
-            if (specialSquares.TryGetValue(position, out SquareType value))
-            {
 
+        private ISquare AddSquare(int position)
+        {
+            if (SpecialSquares.TryGetValue(position, out SquareType value))
+            {
                 return SquareFactory.Create(value);
             }
             else
