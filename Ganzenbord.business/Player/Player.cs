@@ -3,17 +3,18 @@ using Ganzenbord.Business.Squares;
 
 namespace Ganzenbord.Business.Player
 {
-    public class Player(PlayerColor color, ILogger logger) : IPlayer
+    public class Player(ILogger logger, PlayerColor color) : IPlayer
     {
-        private static Random random = new Random();
+
         public int Position { get; private set; }
         public int AmountOfSkips { get; set; } = 0;
         public bool KeepSkipping { get; set; } = false;
         public PlayerColor Color { get; private set; } = color;
         public ILogger Logger { get; private set; } = logger;
         public bool IsWinner { get; set; }
-        //public int[] LastDiceRole { get; set; }
-        public void StartTurn()
+        public int[] LastDiceRole { get; set; }
+
+        public void StartTurn(int[] dice)
         {
             if (KeepSkipping)
             {
@@ -26,21 +27,12 @@ namespace Ganzenbord.Business.Player
             }
             else
             {
-                int[] dice = RollDice(2);
+                LastDiceRole = dice;
                 Move(dice);
             }
         }
 
-        public int[] RollDice(int amountOfDice)
-        {
-            int[] dice = new int[amountOfDice];
-            for (int i = 0; i < amountOfDice; i++)
-            {
-                dice[i] = random.Next(1, 7);
-            }
-            Logger.Log($"{Color} rolls {string.Join(", ", dice)}");
-            return dice;
-        }
+
 
         public void Move(int[] dice)
         {
@@ -54,38 +46,29 @@ namespace Ganzenbord.Business.Player
         {
             int position;
             //TODO turn1 moet in game klasse komen
-            if (Game.Instance.Turn == 1 && dice.Sum() == 9 && dice.Length == 2)
-            {
-                if (dice.Contains(6))
-                {
-                    position = 53;
-                }
-                else
-                {
-                    position = 26;
-                }
-            }
-            else
-            {
-                position = Position + dice.Sum();
-            }
+            
+            
+            position = Position + dice.Sum();
+            
 
-            if (position > Game.Instance.GameBoard.Squares.Length-1)
+            if (position > Game.Instance.GameBoard.Squares.Length - 1)
             {
                 //Gameboard.count
                 //terugkijken naar hoeveel te veel, dynamisch
-                return (Game.Instance.GameBoard.Squares.Length - 1)*2 - position;
+                return (Game.Instance.GameBoard.Squares.Length - 1) * 2 - position;
             }
             else
             {
                 return position;
             }
         }
+
         //steps
 
         public void MoveToPosition(int position)
         {
             Position = position;
+            HandleSquare(Position);
         }
 
         private void HandleSquare(int position)

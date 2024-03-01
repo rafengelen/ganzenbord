@@ -13,7 +13,7 @@ namespace Ganzenbord.Unittests
             //arrange
             Bridge bridge = new Bridge(6);
             Mock<ILogger> logger = new Mock<ILogger>();
-            IPlayer player = new Player(PlayerColor.Red, logger.Object);
+            Player player = new Player(logger.Object, PlayerColor.Red);
 
             //act
             bridge.PlayerEntersSquare(player);
@@ -28,7 +28,7 @@ namespace Ganzenbord.Unittests
             //arrange
             Inn inn = new Inn(19);
             Mock<ILogger> logger = new Mock<ILogger>();
-            Player player = new Player(PlayerColor.Red, logger.Object);
+            Player player = new Player(logger.Object, PlayerColor.Red);
 
             //act
             inn.PlayerEntersSquare(player);
@@ -42,14 +42,15 @@ namespace Ganzenbord.Unittests
         {
             //arrange
             Mock<ILogger> logger = new Mock<ILogger>();
-            Player player = new Player(PlayerColor.Red, logger.Object);
+            Player player = new Player(logger.Object, PlayerColor.Red);
             player.AmountOfSkips = 1;
 
             //act
-            player.StartTurn();
+            //player.StartTurn();
 
             //assert
             Assert.Equal(0, player.AmountOfSkips);
+            Assert.Fail();
         }
 
         [Fact]
@@ -58,8 +59,8 @@ namespace Ganzenbord.Unittests
             //ARRANGE
 
             Mock<ILogger> logger = new Mock<ILogger>();
-            Player player1 = new Player(PlayerColor.Red, logger.Object);
-            Player player2 = new Player(PlayerColor.Blue, logger.Object);
+            Player player1 = new Player(logger.Object, PlayerColor.Red);
+            Player player2 = new Player(logger.Object, PlayerColor.Blue);
 
             Well well = new Well(31);
 
@@ -84,7 +85,7 @@ namespace Ganzenbord.Unittests
         {
             //arrange
             Mock<ILogger> logger = new Mock<ILogger>();
-            Player player = new Player(PlayerColor.Red, logger.Object);
+            Player player = new Player(logger.Object, PlayerColor.Red);
             Maze maze = new Maze(42);
 
             //act
@@ -99,7 +100,7 @@ namespace Ganzenbord.Unittests
         {
             //arrange
             Mock<ILogger> logger = new Mock<ILogger>();
-            Player player = new Player(PlayerColor.Red, logger.Object);
+            Player player = new Player(logger.Object, PlayerColor.Red);
             Prison prison = new Prison(52);
 
             //act
@@ -114,7 +115,7 @@ namespace Ganzenbord.Unittests
         {
             //arrange
             Mock<ILogger> logger = new Mock<ILogger>();
-            Player player = new Player(PlayerColor.Red, logger.Object);
+            Player player = new Player(logger.Object, PlayerColor.Red);
             Death death = new Death(58);
 
             //act
@@ -129,7 +130,7 @@ namespace Ganzenbord.Unittests
         {
             //arrange
             Mock<ILogger> logger = new Mock<ILogger>();
-            Player player = new Player(PlayerColor.Red, logger.Object);
+            Player player = new Player(logger.Object, PlayerColor.Red);
             End end = new End(63);
 
             //act

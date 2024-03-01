@@ -39,7 +39,7 @@ namespace Ganzenbord.Business
                     StopGame();
                     break;
                 }
-                player.StartTurn();
+                //player.StartTurn();
                 logger.Log($"{player.Color}: {player.Position}\n");
             }
             Game.Instance.Turn++;

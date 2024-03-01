@@ -1,4 +1,6 @@
-﻿using Ganzenbord.Business.Logger;
+﻿using Ganzenbord.Business;
+using Ganzenbord.Business.GameBoard;
+using Ganzenbord.Business.Logger;
 using Ganzenbord.Business.Player;
 using Moq;
 
@@ -11,10 +13,10 @@ namespace Ganzenbord.Unittests
         {
             //ARRANGE
             Mock<ILogger> mockLogger = new Mock<ILogger>();
-            Player player = new Player(PlayerColor.Red, mockLogger.Object);
-
+            Player player = new Player(mockLogger.Object, PlayerColor.Red);
+            GameTmp game = new GameTmp(mockLogger.Object, [player], GameBoardType.GooseGame);
             //ACT
-            int[] diceRolls = player.RollDice(2);
+            int[] diceRolls = game.RollDice(2);
 
             //ASSERT
             Assert.Equal(2, diceRolls.Length);
