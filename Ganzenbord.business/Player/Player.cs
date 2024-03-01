@@ -12,7 +12,7 @@ namespace Ganzenbord.Business.Player
         public PlayerColor Color { get; private set; } = color;
         public ILogger Logger { get; private set; } = logger;
         public bool IsWinner { get; set; }
-
+        //public int[] LastDiceRole { get; set; }
         public void StartTurn()
         {
             if (KeepSkipping)
@@ -70,17 +70,18 @@ namespace Ganzenbord.Business.Player
                 position = Position + dice.Sum();
             }
 
-            if (position > 63)
+            if (position > Game.Instance.GameBoard.Squares.Length-1)
             {
                 //Gameboard.count
                 //terugkijken naar hoeveel te veel, dynamisch
-                return 126 - position;
+                return (Game.Instance.GameBoard.Squares.Length - 1)*2 - position;
             }
             else
             {
                 return position;
             }
         }
+        //steps
 
         public void MoveToPosition(int position)
         {
