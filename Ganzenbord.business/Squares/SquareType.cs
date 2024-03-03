@@ -9,6 +9,7 @@
         End,
         Maze,
         Prison,
-        Static
+        Static,
+        Goose
     }
 }

@@ -36,6 +36,7 @@ namespace Ganzenbord.Business.Player
 
         public void Move(int[] dice)
         {
+            LastDiceRole= dice;
             Position = CalculatePosition(dice);
 
             Logger.Log($"{Color} lands on position {Position}");

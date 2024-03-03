@@ -33,6 +33,8 @@ namespace Ganzenbord.Business.Factory
                 case SquareType.Bridge:
                     return new Bridge(position);
 
+                case SquareType.Goose:
+                    return new Goose(position);
                 default:
                     return new Static(position);
             }

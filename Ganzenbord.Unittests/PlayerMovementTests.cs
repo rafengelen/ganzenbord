@@ -181,7 +181,7 @@ namespace Ganzenbord.Unittests
             game.Turn = 2;
 
             //ACT
-            game.HandleFirstRound();
+            game.HandleFirstRound(player,dice);
 
             //ASSERT
             Assert.NotEqual(53, player.Position);

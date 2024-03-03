@@ -119,7 +119,7 @@ namespace Ganzenbord.Business
             return dice;
         }
 
-        public void HandleFirstRound()
+        public void HandleFirstRound(IPlayer player,int[] dice)
         {
             if (dice.Contains(6))
             {
