@@ -3,7 +3,7 @@ using Ganzenbord.Business.Squares;
 
 namespace Ganzenbord.Business.Player
 {
-    public class Player(ILogger logger, PlayerColor color) : IPlayer
+    public class RegularPlayer(ILogger logger, PlayerColor color) : IPlayer
     {
 
         public int Position { get; private set; }
@@ -12,6 +12,7 @@ namespace Ganzenbord.Business.Player
         public PlayerColor Color { get; private set; } = color;
         public ILogger Logger { get; private set; } = logger;
         public bool IsWinner { get; set; }
+        public bool ReverseMoving { get; set; } = false;
         public int[] LastDiceRole { get; set; }
 
         public void StartTurn(int[] dice)
@@ -29,6 +30,7 @@ namespace Ganzenbord.Business.Player
             {
                 LastDiceRole = dice;
                 Move(dice);
+                ReverseMoving = false;
             }
         }
 
@@ -36,7 +38,7 @@ namespace Ganzenbord.Business.Player
 
         public void Move(int[] dice)
         {
-            LastDiceRole= dice;
+            LastDiceRole = dice;
             Position = CalculatePosition(dice);
 
             Logger.Log($"{Color} lands on position {Position}");
@@ -46,17 +48,21 @@ namespace Ganzenbord.Business.Player
         private int CalculatePosition(int[] dice)
         {
             int position;
-            //TODO turn1 moet in game klasse komen
             
-            
-            position = Position + dice.Sum();
             
 
-            if (position > Game.Instance.GameBoard.Squares.Length - 1)
+            position = Position + dice.Sum();
+
+            if (ReverseMoving)
+            {
+                return Position - dice.Sum();
+            }
+            else if (position > GooseGameBoard.Instance.Squares.Length-1)
             {
                 //Gameboard.count
                 //terugkijken naar hoeveel te veel, dynamisch
-                return (Game.Instance.GameBoard.Squares.Length - 1) * 2 - position;
+                ReverseMoving = true;
+                return (GooseGameBoard.Instance.Squares.Length - 1) * 2 - position;
             }
             else
             {
@@ -74,7 +80,7 @@ namespace Ganzenbord.Business.Player
 
         private void HandleSquare(int position)
         {
-            ISquare square = Game.Instance.GameBoard.GetSquare(position);
+            ISquare square = GooseGameBoard.Instance.GetSquare(position);
             Logger.Log($"{Color} current square: {square.GetType().Name}");
             square.PlayerEntersSquare(this);
         }

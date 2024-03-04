@@ -1,4 +1,5 @@
-﻿using Ganzenbord.Business.Logger;
+﻿
+using Ganzenbord.Business.Logger;
 
 namespace Ganzenbord
 {
@@ -7,6 +8,11 @@ namespace Ganzenbord
         public void Log(string message)
         {
             Console.WriteLine(message);
+        }
+        public string Input(string message)
+        {
+            Log(message);
+            return Console.ReadLine();
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Ganzenbord.Business.Factory;
+using Ganzenbord.Business.Player;
 using Ganzenbord.Business.Squares;
+using Moq;
 
 namespace Ganzenbord.Unittests
 {
@@ -94,7 +96,7 @@ namespace Ganzenbord.Unittests
         public void WhenTypeIsStatic_ThenCreateStaticSquare()
         {
             //ARRANGE
-            SquareType staticSquare = SquareType.Static;
+            SquareType staticSquare = SquareType.Regular;
 
             SquareFactory squareFactory = new SquareFactory();
             //ACT
@@ -102,7 +104,7 @@ namespace Ganzenbord.Unittests
 
             //ASSERT
 
-            Assert.Equal(typeof(Static), square.GetType());
+            Assert.Equal(typeof(Regular), square.GetType());
         }
 
         [Fact]
@@ -118,6 +120,23 @@ namespace Ganzenbord.Unittests
             //ASSERT
 
             Assert.Equal(typeof(Well), square.GetType());
+        }
+        [Fact]
+        public void WhenTypeIsNotDefines_ThenThrowException()
+        {
+            // ARRANGE
+            SquareType type = (SquareType)999; // An undefined type
+            string expectedMessage = $"Cannot create square with type {type}";
+            SquareFactory squareFactory = new SquareFactory();
+
+            // ACT + ASSERT
+            var exceptionReturn = Assert.Throws<Exception>(() =>
+            {
+                squareFactory.Create(type,1);
+            });
+
+            // ASSERT
+            Assert.Equal(expectedMessage, exceptionReturn.Message);
         }
     }
 }

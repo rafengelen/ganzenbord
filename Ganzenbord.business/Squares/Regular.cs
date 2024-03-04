@@ -2,9 +2,9 @@
 
 namespace Ganzenbord.Business.Squares
 {
-    public class Static : ISquare
+    public class Regular : ISquare
     {
-        public Static(int position)
+        public Regular(int position)
         {
             Position = position;
         }

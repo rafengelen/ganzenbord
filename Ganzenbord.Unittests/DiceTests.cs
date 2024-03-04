@@ -1,5 +1,5 @@
 ﻿using Ganzenbord.Business;
-using Ganzenbord.Business.GameBoard;
+using Ganzenbord.Business.Dice;
 using Ganzenbord.Business.Logger;
 using Ganzenbord.Business.Player;
 using Moq;
@@ -13,8 +13,10 @@ namespace Ganzenbord.Unittests
         {
             //ARRANGE
             Mock<ILogger> mockLogger = new Mock<ILogger>();
-            Player player = new Player(mockLogger.Object, PlayerColor.Red);
-            GameTmp game = new GameTmp(mockLogger.Object, [player], GameBoardType.GooseGame);
+            Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
+            IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
+            Game game = new Game(mockLogger.Object, diceGenerator.Object, PlayerType.Regular, 2, 1);
+            game.Players = [player];
             //ACT
             int[] diceRolls = game.RollDice(2);
 

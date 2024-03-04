@@ -2,15 +2,14 @@
 
 namespace Ganzenbord.Business.Factory
 {
-    public class SquareFactory
+    public class SquareFactory : ISquareFactory
     {
-        //zo min mogelijk static -> gaat tegen OO en dependancy injection in
         public ISquare Create(SquareType squareType, int position)
         {
             switch (squareType)
             {
-                case SquareType.Static:
-                    return new Static(position);
+                case SquareType.Regular:
+                    return new Regular(position);
 
                 case SquareType.Maze:
                     return new Maze(position);
@@ -36,7 +35,7 @@ namespace Ganzenbord.Business.Factory
                 case SquareType.Goose:
                     return new Goose(position);
                 default:
-                    return new Static(position);
+                    throw new Exception($"Cannot create square with type {squareType}");
             }
         }
     }

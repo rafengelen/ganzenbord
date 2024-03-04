@@ -1,7 +1,7 @@
-﻿namespace Ganzenbord.Business.Logger
+﻿namespace Ganzenbord.Business.Logger;
+
+public interface ILogger
 {
-    public interface ILogger
-    {
-        void Log(string message);
-    }
+    string Input(string message);
+    void Log(string message);
 }

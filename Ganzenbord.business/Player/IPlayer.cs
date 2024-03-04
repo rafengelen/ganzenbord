@@ -11,6 +11,7 @@ namespace Ganzenbord.Business.Player
         int[] LastDiceRole { get; set; }
         ILogger Logger { get; }
         int Position { get; }
+        bool ReverseMoving { get; set; }
 
         void Move(int[] dice);
         void MoveToPosition(int position);

@@ -1,5 +1,5 @@
 using Ganzenbord.Business;
-using Ganzenbord.Business.GameBoard;
+using Ganzenbord.Business.Dice;
 using Ganzenbord.Business.Logger;
 using Ganzenbord.Business.Player;
 using Moq;
@@ -11,10 +11,12 @@ namespace Ganzenbord.Unittests
         [Fact]
         public void WhenPlayerRollsDice_ThenPlayerMoves()
         {
-            //arrange
-            Game.Instance.StartGame();
-            Mock<ILogger> logger = new Mock<ILogger>();
-            Player player = new Player(logger.Object, PlayerColor.Red);
+            //ARRANGE
+            Mock<ILogger> mockLogger = new Mock<ILogger>();
+            Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
+            IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
+            Game game = new Game(mockLogger.Object, diceGenerator.Object, PlayerType.Regular, 2, 1);
+            game.Players = [player];
             player.MoveToPosition(1);
             int[] dice = { 1, 2 };
 
@@ -24,14 +26,35 @@ namespace Ganzenbord.Unittests
             //assert
             Assert.Equal(4, player.Position);
         }
+        [Fact]
+        public void WhenPlayerRollsDiceAndNotSkipping_ThenNotStandingStill()
+        {
+            //ARRANGE
+            Mock<ILogger> mockLogger = new Mock<ILogger>();
+            Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
+            IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
+            Game game = new Game(mockLogger.Object, diceGenerator.Object, PlayerType.Regular, 2, 1);
+            game.Players = [player];
+            player.MoveToPosition(1);
+            int[] dice = { 1, 2 };
+
+            //act
+            player.Move(dice);
+
+            //assert
+            Assert.NotEqual(1, player.Position);
+        }
+
 
         [Fact]
         public void WhenPlayerMovesFurtherThan63_ThenPlayerWalksRemainingStepsBackwards()
         {
-            //arrange
-            Game.Instance.StartGame();
-            Mock<ILogger> logger = new Mock<ILogger>();
-            Player player = new Player(logger.Object, PlayerColor.Red);
+            //ARRANGE
+            Mock<ILogger> mockLogger = new Mock<ILogger>();
+            Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
+            IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
+            Game game = new Game(mockLogger.Object, diceGenerator.Object, PlayerType.Regular, 2, 1);
+            game.Players = [player];
             player.MoveToPosition(62);
             int[] dice = { 1, 2 };
 
@@ -42,149 +65,94 @@ namespace Ganzenbord.Unittests
             Assert.Equal(61, player.Position);
         }
 
-        [Fact]
-        public void WhenPlayerRolls5And4InTurn1_ThenGoTo26()
+        [Theory]
+        [InlineData(new int[] { 5, 4 }, 0, 26, 1)]
+        [InlineData(new int[] { 4, 5 }, 0, 26, 1)]
+        public void WhenPlayerRolls5And4InTurn1_ThenGoTo26(int[] dice, int startPosition, int endPosition, int round)
         {
             //ARRANGE
-            Game.Instance.StartGame();
-            Mock<ILogger> logger = new Mock<ILogger>();
-            Player player = new Player(logger.Object, PlayerColor.Red);
-            player.MoveToPosition(0);
-            int[] dice = { 5, 4 };
+            Mock<ILogger> mockLogger = new Mock<ILogger>();
+            Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
+            diceGenerator.Setup(generator => generator.RollDice(It.IsAny<int>())).Returns(dice);
+            IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
+            Game game = new Game(mockLogger.Object, diceGenerator.Object, PlayerType.Regular, 2, 1);
+            game.Players = [player];
+            player.MoveToPosition(startPosition);
+            game.Turn = round;
 
             //ACT
-            player.Move(dice);
+            game.PlayRound();
 
             //ASSERT
-            Assert.Equal(26, player.Position);
+            Assert.Equal(endPosition, player.Position);
+        }
+        [Theory]
+        [InlineData(new int[] { 3, 6 }, 0, 53, 1)]
+        [InlineData(new int[] { 6, 3 }, 0, 53, 1)]
+        public void WhenPlayerRolls3And5InTurn1_ThenGoTo52(int[] dice, int startPosition, int endPosition, int round)
+        {
+            //ARRANGE
+            Mock<ILogger> mockLogger = new Mock<ILogger>();
+            Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
+            diceGenerator.Setup(generator => generator.RollDice(It.IsAny<int>())).Returns(dice);
+            IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
+            Game game = new Game(mockLogger.Object, diceGenerator.Object, PlayerType.Regular, 2, 1);
+            game.Players = [player];
+            player.MoveToPosition(startPosition);
+            game.Turn = round;
+
+            //ACT
+            game.PlayRound();
+
+            //ASSERT
+            Assert.Equal(endPosition, player.Position);
         }
 
-        [Fact]
-        public void WhenPlayerRolls5And4InTurn2_ThenNotGoTo26()
+        [Theory]
+        [InlineData(new int[] { 5, 4 }, 0, 26, 2)]
+        [InlineData(new int[] { 5, 4 }, 0, 26, 3)]
+        [InlineData(new int[] { 4, 5 }, 0, 26, 2)]
+        [InlineData(new int[] { 4, 5 }, 0, 26, 3)]
+        public void WhenPlayerRolls5And4NotInTurn1_ThenNotGoTo26(int[] dice, int startPosition, int endPosition, int round)
         {
             //ARRANGE
-            Game.Instance.StartGame();
-            Mock<ILogger> logger = new Mock<ILogger>();
-            Player player = new Player(logger.Object, PlayerColor.Red);
-            player.MoveToPosition(0);
-            int[] dice = { 5, 4 };
-            Game.Instance.Turn = 2;
+            Mock<ILogger> mockLogger = new Mock<ILogger>();
+            Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
+            diceGenerator.Setup(generator => generator.RollDice(It.IsAny<int>())).Returns(dice);
+            IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
+            Game game = new Game(mockLogger.Object, diceGenerator.Object, PlayerType.Regular, 2, 1);
+            game.Players = [player];
+            player.MoveToPosition(startPosition);
+            game.Turn = round;
 
             //ACT
-            player.Move(dice);
+            game.PlayRound();
 
             //ASSERT
-            Assert.NotEqual(26, player.Position);
+            Assert.NotEqual(endPosition, player.Position);
         }
-
-        [Fact]
-        public void WhenPlayerRolls4And5InTurn1_ThenGoTo26()
+        [Theory]
+        [InlineData(new int[] { 6,3 }, 0, 52, 2)]
+        [InlineData(new int[] { 6,3 }, 0, 52, 3)]
+        [InlineData(new int[] { 3,6 }, 0, 52, 2)]
+        [InlineData(new int[] { 3,6 }, 0, 52, 3)]
+        public void WhenPlayerRolls3And6NotInTurn1_ThenNotGoTo52(int[] dice, int startPosition, int endPosition, int round)
         {
             //ARRANGE
-            Game.Instance.StartGame();
-            Mock<ILogger> logger = new Mock<ILogger>();
-            Player player = new Player(logger.Object, PlayerColor.Red);
-            player.MoveToPosition(0);
-            int[] dice = { 4, 5 };
+            Mock<ILogger> mockLogger = new Mock<ILogger>();
+            Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
+            diceGenerator.Setup(generator => generator.RollDice(It.IsAny<int>())).Returns(dice);
+            IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
+            Game game = new Game(mockLogger.Object, diceGenerator.Object, PlayerType.Regular, 2, 1);
+            game.Players = [player];
+            player.MoveToPosition(startPosition);
+            game.Turn = round;
 
             //ACT
-            player.Move(dice);
+            game.PlayRound();
 
             //ASSERT
-            Assert.Equal(26, player.Position);
-        }
-
-        [Fact]
-        public void WhenPlayerRolls4And5InTurn2_ThenNotGoTo26()
-        {
-            //ARRANGE
-            Game.Instance.StartGame();
-            Mock<ILogger> logger = new Mock<ILogger>();
-            Player player = new Player(logger.Object, PlayerColor.Red);
-            int[] dice = { 4, 5 };
-            Game.Instance.Turn = 2;
-
-            //ACT
-            player.Move(dice);
-
-            //ASSERT
-            Assert.NotEqual(26, player.Position);
-        }
-
-        [Fact]
-        public void WhenPlayerRolls6And3InTurn1_ThenGoTo53()
-        {
-            //ARRANGE
-            Game.Instance.StartGame();
-            Mock<ILogger> logger = new Mock<ILogger>();
-            Player player = new Player(logger.Object, PlayerColor.Red);
-            player.MoveToPosition(0);
-            int[] dice = [3, 6];
-            //Game.Instance.Turn = 1;
-
-            //ACT
-            player.Move(dice);
-
-            //ASSERT
-            Assert.Equal(53, player.Position);
-        }
-
-        [Fact]
-        public void WhenPlayerRolls6And3InTurn2_ThenNotGoTo53()
-        {
-            //ARRANGE
-            Game.Instance.StartGame();
-            Mock<ILogger> logger = new Mock<ILogger>();
-            Player player = new Player(logger.Object, PlayerColor.Red);
-            player.MoveToPosition(0);
-            int[] dice = [6, 3];
-            Game.Instance.Turn = 2;
-
-            //ACT
-            player.Move(dice);
-
-            //ASSERT
-            Assert.NotEqual(53, player.Position);
-        }
-
-        [Fact]
-        public void WhenPlayerRolls3And6InTurn1_ThenGoTo53()
-        {
-            //ARRANGE
-            Game.Instance.StartGame();
-            Mock<ILogger> logger = new Mock<ILogger>();
-            Player player = new Player(logger.Object, PlayerColor.Red);
-            player.MoveToPosition(0);
-            int[] dice = [3, 6];
-
-            //ACT
-            player.Move(dice);
-
-            //ASSERT
-            Assert.Equal(53, player.Position);
-        }
-
-        [Fact]
-        public void WhenPlayerRolls3And6InTurn2_ThenNotGoTo53()
-        {
-            //ARRANGE
-            Mock<ILogger> logger = new Mock<ILogger>();
-            Player player = new Player(logger.Object, PlayerColor.Red);
-            GameTmp game = new GameTmp(
-                logger.Object,
-                [player],
-                GameBoardType.GooseGame
-            );
-           
-            player.MoveToPosition(0);
-            int[] dice = [3, 6];
-            game.Turn = 2;
-
-            //ACT
-            game.HandleFirstRound(player,dice);
-
-            //ASSERT
-            Assert.NotEqual(53, player.Position);
+            Assert.NotEqual(endPosition, player.Position);
         }
     }
 }

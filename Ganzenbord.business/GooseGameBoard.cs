@@ -1,12 +1,13 @@
 ﻿using Ganzenbord.Business.Factory;
 using Ganzenbord.Business.Squares;
 
-namespace Ganzenbord.Business.GameBoard
+namespace Ganzenbord.Business
 {
-    public class GooseGameBoard : IGameBoard
+    public class GooseGameBoard
     {
         public ISquare[] Squares { get; set; }
-        private SquareFactory squareFactory;
+        private SquareFactory squareFactory = new SquareFactory();
+        private static GooseGameBoard _Instance;
 
         private readonly Dictionary<int, SquareType> SpecialSquares = new Dictionary<int, SquareType>
             {
@@ -31,10 +32,20 @@ namespace Ganzenbord.Business.GameBoard
                 { 54, SquareType.Goose },
                 { 59, SquareType.Goose }
             };
-
-        public GooseGameBoard(SquareFactory factory)
+        public static GooseGameBoard Instance
         {
-            squareFactory = factory;
+            get
+            {
+                if (_Instance == null)
+                {
+                    _Instance = new GooseGameBoard();
+                }
+                return _Instance;
+            }
+        }
+
+        private GooseGameBoard()
+        {
             SetupGameBoard();
         }
 
@@ -62,7 +73,7 @@ namespace Ganzenbord.Business.GameBoard
             }
             else
             {
-                return squareFactory.Create(SquareType.Static, position);
+                return squareFactory.Create(SquareType.Regular, position);
             }
         }
     }
