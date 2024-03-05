@@ -35,25 +35,6 @@ namespace Ganzenbord.Unittests
             Assert.Equal(1, player.AmountOfSkips);
         }
 
-        //[Fact]
-        //public void WhenPlayerLandsOnInnAndSkipsTurn_ThenStaysOnPositionAndLowersSkipsAmount()
-        //{
-        //    //arrange
-        //    Mock<ILogger> mockLogger = new Mock<ILogger>();
-        //    Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
-        //    Mock<IPlayerFactory> playerFactory = new Mock<IPlayerFactory>();
-        //    IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
-        //    Game game = new Game(mockLogger.Object, diceGenerator.Object, playerFactory.Object, PlayerType.Regular);
-        //    game.Players = [player];
-        //    player.AmountOfSkips = 1;
-
-        //    //act
-        //    game.PlayRound();
-
-        //    //assert
-        //    Assert.Equal(0, player.AmountOfSkips);
-        //}
-
         [Fact]
         public void WhenPlayerLandsOnWell_ThenSkipUntilAnotherPlayerArrives()
         {

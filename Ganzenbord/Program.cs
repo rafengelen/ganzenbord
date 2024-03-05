@@ -13,6 +13,7 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<IDiceGenerator, DiceGenerator>()
     .AddTransient<IPlayerFactory, PlayerFactory>()
     .AddTransient<ISquareFactory, SquareFactory>()
+    .AddTransient<IFooService, FooService>()
     .AddSingleton<IGooseGameBoard, GooseGameBoard>() // Singleton: Creates a single instance for the entire application.
     .AddSingleton<IGame, Game>()
 

@@ -10,7 +10,6 @@ namespace Ganzenbord.Business
         public IDiceGenerator diceGenerator;
         public IPlayerFactory playerFactory;
         private ILogger logger;
-        private IGooseGameBoard gameBoard;
 
         private Random random = new Random();
         public int Turn { get; set; } = 1;
@@ -20,12 +19,11 @@ namespace Ganzenbord.Business
 
         public IPlayer[] Players { get; set; }
 
-        public Game(ILogger logger, IDiceGenerator diceGenerator, IPlayerFactory playerFactory, IGooseGameBoard gameBoard, int amountOfDice = 2, int amountOfPlayers = 4)
+        public Game(ILogger logger, IDiceGenerator diceGenerator, IPlayerFactory playerFactory, int amountOfDice = 2, int amountOfPlayers = 4)
         {
             this.logger = logger;
             this.diceGenerator = diceGenerator;
             this.playerFactory = playerFactory;
-            this.gameBoard = gameBoard;
 
             AmountOfDice = amountOfDice;
             IsValidGame = ValidPlayers(amountOfPlayers);

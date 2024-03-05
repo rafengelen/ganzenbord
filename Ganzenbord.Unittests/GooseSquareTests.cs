@@ -38,28 +38,6 @@ namespace Ganzenbord.Unittests
             Assert.Equal(endPosition, player.Position);
         }
 
-        //[Fact]
-        //public void WhenPlayerRolls9NotInFirstTurn_ThenPlayerWins()
-        //{
-        //    //ARRANGE
-        //    Mock<ILogger> mockLogger = new Mock<ILogger>();
-        //    Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
-        //    Mock<IPlayerFactory> playerFactory = new Mock<IPlayerFactory>();
-
-        //    IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
-        //    Game game = new Game(mockLogger.Object, diceGenerator.Object, playerFactory.Object, PlayerType.Regular);
-        //    game.Players = [player];
-        //    game.Turn = 2;
-        //    int[] dice = [4, 5];
-
-        //    //ACT
-        //    player.Move(dice);
-
-        //    //ASSERT
-        //    Assert.Equal(63, player.Position);
-        //    Assert.True(player.IsWinner);
-        //}
-
         [Theory]
         [InlineData(new int[] { 1, 1 }, 47, 43)]
         [InlineData(new int[] { 2, 1 }, 17, 11)]
