@@ -5,11 +5,13 @@ using Ganzenbord.Business.Player;
 
 namespace Ganzenbord.Business
 {
-    public class Game
+    public class Game : IGame
     {
         public IDiceGenerator diceGenerator;
         public IPlayerFactory playerFactory;
         private ILogger logger;
+        private IGooseGameBoard gameBoard;
+
         private Random random = new Random();
         public int Turn { get; set; } = 1;
         public bool ActiveGame { get; set; } = false;
@@ -18,28 +20,29 @@ namespace Ganzenbord.Business
 
         public IPlayer[] Players { get; set; }
 
-        public Game(ILogger logger, IDiceGenerator diceGenerator, IPlayerFactory playerFactory, PlayerType playerType, int amountOfDice = 2, int amountOfPlayers = 4)
+        public Game(ILogger logger, IDiceGenerator diceGenerator, IPlayerFactory playerFactory, IGooseGameBoard gameBoard, int amountOfDice = 2, int amountOfPlayers = 4)
         {
             this.logger = logger;
             this.diceGenerator = diceGenerator;
             this.playerFactory = playerFactory;
+            this.gameBoard = gameBoard;
 
             AmountOfDice = amountOfDice;
             IsValidGame = ValidPlayers(amountOfPlayers);
             if (IsValidGame)
             {
-                Players = CreatePlayers(logger, amountOfPlayers, playerType);
+                Players = CreatePlayers(amountOfPlayers);
             }
         }
 
-        private IPlayer[] CreatePlayers(ILogger logger, int amountOfPlayers, PlayerType playerType)
+        private IPlayer[] CreatePlayers(int amountOfPlayers)
         {
             IPlayer[] players = new IPlayer[amountOfPlayers];
 
             for (int i = 0; i < amountOfPlayers; i++)
             {
                 PlayerColor color = (PlayerColor)i;
-                IPlayer player = playerFactory.Create(logger, playerType, color);
+                IPlayer player = playerFactory.Create(color);
                 players[i] = player;
             }
 

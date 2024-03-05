@@ -3,9 +3,12 @@ using Ganzenbord.Business.Squares;
 
 namespace Ganzenbord.Business.Player
 {
-    public class RegularPlayer(ILogger logger, PlayerColor color) : IPlayer
+    public class RegularPlayer(ILogger logger, IGooseGameBoard gameBoard, PlayerColor color) : IPlayer
     {
         public ILogger Logger { get; private set; } = logger;
+
+        private IGooseGameBoard _gameBoard = gameBoard;
+
         public int Position { get; private set; }
         public int AmountOfSkips { get; set; } = 0;
         public bool KeepSkipping { get; set; } = false;
@@ -28,7 +31,6 @@ namespace Ganzenbord.Business.Player
             }
             else
             {
-                LastDiceRole = dice;
                 Move(dice);
                 ReverseMoving = false;
             }
@@ -53,12 +55,12 @@ namespace Ganzenbord.Business.Player
             {
                 return Position - dice.Sum();
             }
-            else if (position > GooseGameBoard.Instance.Squares.Length - 1)
+            else if (position > _gameBoard.Squares.Length - 1)
             {
                 //Gameboard.count
                 //terugkijken naar hoeveel te veel, dynamisch
                 ReverseMoving = true;
-                return (GooseGameBoard.Instance.Squares.Length - 1) * 2 - position;
+                return (_gameBoard.Squares.Length - 1) * 2 - position;
             }
             else
             {
@@ -76,7 +78,7 @@ namespace Ganzenbord.Business.Player
 
         private void HandleSquare(int position)
         {
-            ISquare square = GooseGameBoard.Instance.GetSquare(position);
+            ISquare square = _gameBoard.GetSquare(position);
             Logger.Log($"{Color} current square: {square.GetType().Name}");
             square.PlayerEntersSquare(this);
         }

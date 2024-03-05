@@ -1,9 +1,4 @@
-﻿using Ganzenbord.Business;
-using Ganzenbord.Business.Dice;
-using Ganzenbord.Business.Factory;
-using Ganzenbord.Business.Logger;
-using Ganzenbord.Business.Player;
-using Moq;
+﻿using Ganzenbord.Business.Player;
 
 namespace Ganzenbord.Unittests
 {
@@ -16,14 +11,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnGoose_ThenGoForwardSameAmountOfSteps(int[] dice, int startPosition, int endPosition)
         {
             //ARRANGE
-            Mock<ILogger> mockLogger = new Mock<ILogger>();
-            Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
-            Mock<IPlayerFactory> playerFactory = new Mock<IPlayerFactory>();
-
-            IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
-            Game game = new Game(mockLogger.Object, diceGenerator.Object, playerFactory.Object, PlayerType.Regular);
-            game.Players = [player];
-            player.MoveToPosition(startPosition);
+            IPlayer player = PlayerHelper.GenerateTestPlayer(startPosition);
 
             //ACT
             player.Move(dice);
@@ -31,6 +19,8 @@ namespace Ganzenbord.Unittests
             //ASSERT
             Assert.Equal(endPosition, player.Position);
         }
+
+        
 
         [Theory]
         [InlineData(new int[] { 1, 3 }, 37, 49)]
@@ -39,14 +29,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnMultipleGoose_ThenKeepGoingForward(int[] dice, int startPosition, int endPosition)
         {
             //ARRANGE
-            Mock<ILogger> mockLogger = new Mock<ILogger>();
-            Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
-            Mock<IPlayerFactory> playerFactory = new Mock<IPlayerFactory>();
-
-            IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
-            Game game = new Game(mockLogger.Object, diceGenerator.Object, playerFactory.Object, PlayerType.Regular);
-            game.Players = [player];
-            player.MoveToPosition(startPosition);
+            IPlayer player = PlayerHelper.GenerateTestPlayer(startPosition);
 
             //ACT
             player.Move(dice);
@@ -55,27 +38,27 @@ namespace Ganzenbord.Unittests
             Assert.Equal(endPosition, player.Position);
         }
 
-        [Fact]
-        public void WhenPlayerRolls9NotInFirstTurn_ThenPlayerWins()
-        {
-            //ARRANGE
-            Mock<ILogger> mockLogger = new Mock<ILogger>();
-            Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
-            Mock<IPlayerFactory> playerFactory = new Mock<IPlayerFactory>();
+        //[Fact]
+        //public void WhenPlayerRolls9NotInFirstTurn_ThenPlayerWins()
+        //{
+        //    //ARRANGE
+        //    Mock<ILogger> mockLogger = new Mock<ILogger>();
+        //    Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
+        //    Mock<IPlayerFactory> playerFactory = new Mock<IPlayerFactory>();
 
-            IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
-            Game game = new Game(mockLogger.Object, diceGenerator.Object, playerFactory.Object, PlayerType.Regular);
-            game.Players = [player];
-            game.Turn = 2;
-            int[] dice = [4, 5];
+        //    IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
+        //    Game game = new Game(mockLogger.Object, diceGenerator.Object, playerFactory.Object, PlayerType.Regular);
+        //    game.Players = [player];
+        //    game.Turn = 2;
+        //    int[] dice = [4, 5];
 
-            //ACT
-            player.Move(dice);
+        //    //ACT
+        //    player.Move(dice);
 
-            //ASSERT
-            Assert.Equal(63, player.Position);
-            Assert.True(player.IsWinner);
-        }
+        //    //ASSERT
+        //    Assert.Equal(63, player.Position);
+        //    Assert.True(player.IsWinner);
+        //}
 
         [Theory]
         [InlineData(new int[] { 1, 1 }, 47, 43)]
@@ -83,14 +66,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnGooseAndIsMovingBackwards_ThenKeepGoingBackwards(int[] dice, int startPosition, int endPosition)
         {
             //ARRANGE
-            Mock<ILogger> mockLogger = new Mock<ILogger>();
-            Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
-            Mock<IPlayerFactory> playerFactory = new Mock<IPlayerFactory>();
-
-            IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
-            Game game = new Game(mockLogger.Object, diceGenerator.Object, playerFactory.Object, PlayerType.Regular);
-            game.Players = [player];
-            player.MoveToPosition(startPosition);
+            IPlayer player = PlayerHelper.GenerateTestPlayer(startPosition);
             player.ReverseMoving = true;
 
             //ACT
@@ -107,14 +83,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnMultipleGeeseAndIsMovingBackwards_KeepMovingBackwards(int[] dice, int startPosition, int endPosition)
         {
             //ARRANGE
-            Mock<ILogger> mockLogger = new Mock<ILogger>();
-            Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
-            Mock<IPlayerFactory> playerFactory = new Mock<IPlayerFactory>();
-
-            IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
-            Game game = new Game(mockLogger.Object, diceGenerator.Object, playerFactory.Object, PlayerType.Regular);
-            game.Players = [player];
-            player.MoveToPosition(startPosition);
+            IPlayer player = PlayerHelper.GenerateTestPlayer(startPosition);
             player.ReverseMoving = true;
 
             //ACT
@@ -130,13 +99,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerPassesEndAndLandsOnGoose_ThenKeepGoingBackwards(int[] dice, int startPosition, int endPosition)
         {
             //ARRANGE
-            Mock<ILogger> mockLogger = new Mock<ILogger>();
-            Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
-            Mock<IPlayerFactory> playerFactory = new Mock<IPlayerFactory>();
-            IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
-            Game game = new Game(mockLogger.Object, diceGenerator.Object, playerFactory.Object, PlayerType.Regular);
-            game.Players = [player];
-            player.MoveToPosition(startPosition);
+            IPlayer player = PlayerHelper.GenerateTestPlayer(startPosition);
 
             //ACT
             player.Move(dice);

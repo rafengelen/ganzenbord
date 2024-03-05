@@ -5,16 +5,18 @@ using Ganzenbord.Business;
 using Ganzenbord.Business.Dice;
 using Ganzenbord.Business.Factory;
 using Ganzenbord.Business.Logger;
-using Ganzenbord.Business.Player;
+using Microsoft.Extensions.DependencyInjection;
 
-ILogger logger = new ConsoleLogger();
-IDiceGenerator diceGenerator = new DiceGenerator();
-IPlayerFactory factory = new PlayerFactory();
+// Add services to the container.
+var serviceProvider = new ServiceCollection()
+    .AddTransient<ILogger, ConsoleLogger>() // Transient: Creates a new instance every time it's requested.
+    .AddTransient<IDiceGenerator, DiceGenerator>()
+    .AddTransient<IPlayerFactory, PlayerFactory>()
+    .AddTransient<ISquareFactory, SquareFactory>()
+    .AddSingleton<IGooseGameBoard, GooseGameBoard>() // Singleton: Creates a single instance for the entire application.
+    .AddSingleton<IGame, Game>()
 
-Game game = new Game(
-    logger,
-    diceGenerator,
-    factory,
-    PlayerType.Regular
-    );
+.BuildServiceProvider();
+
+IGame game  = serviceProvider.GetRequiredService<IGame>();
 game.StartGame();

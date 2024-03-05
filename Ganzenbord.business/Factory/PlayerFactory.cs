@@ -5,16 +5,19 @@ namespace Ganzenbord.Business.Factory
 {
     public class PlayerFactory : IPlayerFactory
     {
-        public IPlayer Create(ILogger logger, PlayerType type, PlayerColor color)
-        {
-            switch (type)
-            {
-                case PlayerType.Regular:
-                    return new RegularPlayer(logger, color);
+        private ILogger _logger;
+        private IGooseGameBoard _gooseGameBoard;
 
-                default:
-                    throw new Exception($"Cannot find player type {type}");
-            }
+        public PlayerFactory(ILogger logger, IGooseGameBoard gooseGameBoard)
+        {
+            _logger = logger;
+            _gooseGameBoard = gooseGameBoard;
+        }
+
+        public IPlayer Create(PlayerColor color)
+        {
+            return new RegularPlayer(_logger, _gooseGameBoard, color);
+
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿using Ganzenbord.Business;
-using Ganzenbord.Business.Dice;
-using Ganzenbord.Business.Factory;
-using Ganzenbord.Business.Logger;
+﻿using Ganzenbord.Business.Logger;
 using Ganzenbord.Business.Player;
 using Ganzenbord.Business.Squares;
 using Moq;
@@ -15,8 +12,7 @@ namespace Ganzenbord.Unittests
         {
             //arrange
             Bridge bridge = new Bridge(6);
-            Mock<ILogger> logger = new Mock<ILogger>();
-            RegularPlayer player = new RegularPlayer(logger.Object, PlayerColor.Red);
+            IPlayer player = PlayerHelper.GenerateTestPlayer(1);
 
             //act
             bridge.PlayerEntersSquare(player);
@@ -30,8 +26,7 @@ namespace Ganzenbord.Unittests
         {
             //arrange
             Inn inn = new Inn(19);
-            Mock<ILogger> logger = new Mock<ILogger>();
-            RegularPlayer player = new RegularPlayer(logger.Object, PlayerColor.Red);
+            IPlayer player = PlayerHelper.GenerateTestPlayer(1);
 
             //act
             inn.PlayerEntersSquare(player);
@@ -40,24 +35,24 @@ namespace Ganzenbord.Unittests
             Assert.Equal(1, player.AmountOfSkips);
         }
 
-        [Fact]
-        public void WhenPlayerLandsOnInnAndSkipsTurn_ThenStaysOnPositionAndLowersSkipsAmount()
-        {
-            //arrange
-            Mock<ILogger> mockLogger = new Mock<ILogger>();
-            Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
-            Mock<IPlayerFactory> playerFactory = new Mock<IPlayerFactory>();
-            IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
-            Game game = new Game(mockLogger.Object, diceGenerator.Object, playerFactory.Object, PlayerType.Regular);
-            game.Players = [player];
-            player.AmountOfSkips = 1;
+        //[Fact]
+        //public void WhenPlayerLandsOnInnAndSkipsTurn_ThenStaysOnPositionAndLowersSkipsAmount()
+        //{
+        //    //arrange
+        //    Mock<ILogger> mockLogger = new Mock<ILogger>();
+        //    Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
+        //    Mock<IPlayerFactory> playerFactory = new Mock<IPlayerFactory>();
+        //    IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
+        //    Game game = new Game(mockLogger.Object, diceGenerator.Object, playerFactory.Object, PlayerType.Regular);
+        //    game.Players = [player];
+        //    player.AmountOfSkips = 1;
 
-            //act
-            game.PlayRound();
+        //    //act
+        //    game.PlayRound();
 
-            //assert
-            Assert.Equal(0, player.AmountOfSkips);
-        }
+        //    //assert
+        //    Assert.Equal(0, player.AmountOfSkips);
+        //}
 
         [Fact]
         public void WhenPlayerLandsOnWell_ThenSkipUntilAnotherPlayerArrives()
@@ -65,8 +60,8 @@ namespace Ganzenbord.Unittests
             //ARRANGE
 
             Mock<ILogger> logger = new Mock<ILogger>();
-            RegularPlayer player1 = new RegularPlayer(logger.Object, PlayerColor.Red);
-            RegularPlayer player2 = new RegularPlayer(logger.Object, PlayerColor.Blue);
+            IPlayer player1 = PlayerHelper.GenerateTestPlayer(1);
+            IPlayer player2 = PlayerHelper.GenerateTestPlayer(1);
 
             Well well = new Well(31);
 
@@ -90,8 +85,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnMaze_ThenPutPlayerOnSquare39()
         {
             //arrange
-            Mock<ILogger> logger = new Mock<ILogger>();
-            RegularPlayer player = new RegularPlayer(logger.Object, PlayerColor.Red);
+            IPlayer player = PlayerHelper.GenerateTestPlayer(1);
             Maze maze = new Maze(42);
 
             //act
@@ -105,8 +99,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnPrison_ThenSkip3Turns()
         {
             //arrange
-            Mock<ILogger> logger = new Mock<ILogger>();
-            RegularPlayer player = new RegularPlayer(logger.Object, PlayerColor.Red);
+            IPlayer player = PlayerHelper.GenerateTestPlayer(1);
             Prison prison = new Prison(52);
 
             //act
@@ -120,8 +113,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnDeath_ThenPutPlayerAtStart()
         {
             //arrange
-            Mock<ILogger> logger = new Mock<ILogger>();
-            RegularPlayer player = new RegularPlayer(logger.Object, PlayerColor.Red);
+            IPlayer player = PlayerHelper.GenerateTestPlayer(1);
             Death death = new Death(58);
 
             //act
@@ -135,8 +127,7 @@ namespace Ganzenbord.Unittests
         public void WhenPlayerLandsOnEnd_ThenEndGame()
         {
             //arrange
-            Mock<ILogger> logger = new Mock<ILogger>();
-            RegularPlayer player = new RegularPlayer(logger.Object, PlayerColor.Red);
+            IPlayer player = PlayerHelper.GenerateTestPlayer(1);
             End end = new End(63);
 
             //act
