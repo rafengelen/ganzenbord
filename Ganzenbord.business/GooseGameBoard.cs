@@ -5,8 +5,9 @@ namespace Ganzenbord.Business
 {
     public class GooseGameBoard
     {
+        private ISquareFactory squareFactory = new SquareFactory();
         public ISquare[] Squares { get; set; }
-        private SquareFactory squareFactory = new SquareFactory();
+
         private static GooseGameBoard _Instance;
 
         private readonly Dictionary<int, SquareType> SpecialSquares = new Dictionary<int, SquareType>
@@ -32,6 +33,7 @@ namespace Ganzenbord.Business
                 { 54, SquareType.Goose },
                 { 59, SquareType.Goose }
             };
+
         public static GooseGameBoard Instance
         {
             get

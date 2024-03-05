@@ -34,6 +34,7 @@ namespace Ganzenbord.Business.Factory
 
                 case SquareType.Goose:
                     return new Goose(position);
+
                 default:
                     throw new Exception($"Cannot create square with type {squareType}");
             }

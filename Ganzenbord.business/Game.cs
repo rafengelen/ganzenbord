@@ -1,29 +1,29 @@
-﻿using Ganzenbord.Business.Factory;
+﻿using Ganzenbord.Business.Dice;
+using Ganzenbord.Business.Factory;
 using Ganzenbord.Business.Logger;
 using Ganzenbord.Business.Player;
-using System.Drawing;
-using System;
-using System.Numerics;
-using System.Reflection.Metadata.Ecma335;
-using Ganzenbord.Business.Dice;
 
 namespace Ganzenbord.Business
 {
     public class Game
     {
+        public IDiceGenerator diceGenerator;
+        public IPlayerFactory playerFactory;
+        private ILogger logger;
         private Random random = new Random();
         public int Turn { get; set; } = 1;
         public bool ActiveGame { get; set; } = false;
         private int AmountOfDice { get; set; }
-        public bool IsValidGame {  get; set; }
-        private ILogger logger;
+        public bool IsValidGame { get; set; }
+
         public IPlayer[] Players { get; set; }
-        public IDiceGenerator diceGenerator;
-        public Game(ILogger logger, IDiceGenerator diceGenerator,IP PlayerType playerType, int amountOfDice = 2, int amountOfPlayers = 4)
+
+        public Game(ILogger logger, IDiceGenerator diceGenerator, IPlayerFactory playerFactory, PlayerType playerType, int amountOfDice = 2, int amountOfPlayers = 4)
         {
             this.logger = logger;
             this.diceGenerator = diceGenerator;
-            
+            this.playerFactory = playerFactory;
+
             AmountOfDice = amountOfDice;
             IsValidGame = ValidPlayers(amountOfPlayers);
             if (IsValidGame)
@@ -39,7 +39,7 @@ namespace Ganzenbord.Business
             for (int i = 0; i < amountOfPlayers; i++)
             {
                 PlayerColor color = (PlayerColor)i;
-                IPlayer player = PlayerFactory.Create(logger, playerType, color);
+                IPlayer player = playerFactory.Create(logger, playerType, color);
                 players[i] = player;
             }
 
@@ -52,14 +52,14 @@ namespace Ganzenbord.Business
             {
                 logger.Log($"{amountOfPlayers} are too many players, this game can be played with max 4 players.");
                 return false;
-            } else if (amountOfPlayers < 1)
+            }
+            else if (amountOfPlayers < 1)
             {
                 logger.Log($"Cannot play Goose Game with less than 1 player. {amountOfPlayers} is an invalid amount.");
                 return false;
             }
             return true;
         }
-
 
         public void StartGame()
         {
@@ -97,9 +97,9 @@ namespace Ganzenbord.Business
             foreach (IPlayer player in Players)
             {
                 logger.Log($"{player.Color} player");
-                
+
                 int[] dice = diceGenerator.RollDice(AmountOfDice);
-                if (!player.KeepSkipping || player.AmountOfSkips > 0)
+                if (!player.KeepSkipping && player.AmountOfSkips == 0)
                 {
                     logger.Log($"Dice rolls: {string.Join(", ", dice)}");
                 }
@@ -109,36 +109,24 @@ namespace Ganzenbord.Business
                 }
                 else
                 {
-                    
                     player.StartTurn(dice);
-                    
                 }
-                
+
                 logger.Log($"Position: {player.Position}\n");
                 if (player.IsWinner)
                 {
                     StopGame();
                     break;
                 }
+                logger.WaitForKeyStroke();
             }
             if (ActiveGame)
             {
                 Turn++;
             }
-            
-        }
-        public int[] RollDice(int amountOfDice)
-        {
-            int[] dice = new int[amountOfDice];
-            for (int i = 0; i < amountOfDice; i++)
-            {
-                dice[i] = random.Next(1, 7);
-            }
-            
-            return dice;
         }
 
-        public void HandleFirstRound(IPlayer player,int[] dice)
+        public void HandleFirstRound(IPlayer player, int[] dice)
         {
             if (dice.Contains(6))
             {

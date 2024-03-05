@@ -1,9 +1,9 @@
 ﻿using Ganzenbord.Business;
 using Ganzenbord.Business.Dice;
+using Ganzenbord.Business.Factory;
 using Ganzenbord.Business.Logger;
 using Ganzenbord.Business.Player;
 using Moq;
-
 
 namespace Ganzenbord.Unittests
 {
@@ -18,8 +18,10 @@ namespace Ganzenbord.Unittests
             //ARRANGE
             Mock<ILogger> mockLogger = new Mock<ILogger>();
             Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
+            Mock<IPlayerFactory> playerFactory = new Mock<IPlayerFactory>();
+
             IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
-            Game game = new Game(mockLogger.Object, diceGenerator.Object, PlayerType.Regular, 2, 1);
+            Game game = new Game(mockLogger.Object, diceGenerator.Object, playerFactory.Object, PlayerType.Regular);
             game.Players = [player];
             player.MoveToPosition(startPosition);
 
@@ -39,8 +41,10 @@ namespace Ganzenbord.Unittests
             //ARRANGE
             Mock<ILogger> mockLogger = new Mock<ILogger>();
             Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
+            Mock<IPlayerFactory> playerFactory = new Mock<IPlayerFactory>();
+
             IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
-            Game game = new Game(mockLogger.Object, diceGenerator.Object, PlayerType.Regular, 2, 1);
+            Game game = new Game(mockLogger.Object, diceGenerator.Object, playerFactory.Object, PlayerType.Regular);
             game.Players = [player];
             player.MoveToPosition(startPosition);
 
@@ -57,8 +61,10 @@ namespace Ganzenbord.Unittests
             //ARRANGE
             Mock<ILogger> mockLogger = new Mock<ILogger>();
             Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
+            Mock<IPlayerFactory> playerFactory = new Mock<IPlayerFactory>();
+
             IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
-            Game game = new Game(mockLogger.Object, diceGenerator.Object, PlayerType.Regular, 2, 1);
+            Game game = new Game(mockLogger.Object, diceGenerator.Object, playerFactory.Object, PlayerType.Regular);
             game.Players = [player];
             game.Turn = 2;
             int[] dice = [4, 5];
@@ -70,16 +76,19 @@ namespace Ganzenbord.Unittests
             Assert.Equal(63, player.Position);
             Assert.True(player.IsWinner);
         }
+
         [Theory]
-        [InlineData(new int[] { 1,1 }, 47, 43)]
+        [InlineData(new int[] { 1, 1 }, 47, 43)]
         [InlineData(new int[] { 2, 1 }, 17, 11)]
         public void WhenPlayerLandsOnGooseAndIsMovingBackwards_ThenKeepGoingBackwards(int[] dice, int startPosition, int endPosition)
         {
             //ARRANGE
             Mock<ILogger> mockLogger = new Mock<ILogger>();
             Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
+            Mock<IPlayerFactory> playerFactory = new Mock<IPlayerFactory>();
+
             IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
-            Game game = new Game(mockLogger.Object, diceGenerator.Object, PlayerType.Regular, 2, 1);
+            Game game = new Game(mockLogger.Object, diceGenerator.Object, playerFactory.Object, PlayerType.Regular);
             game.Players = [player];
             player.MoveToPosition(startPosition);
             player.ReverseMoving = true;
@@ -100,8 +109,10 @@ namespace Ganzenbord.Unittests
             //ARRANGE
             Mock<ILogger> mockLogger = new Mock<ILogger>();
             Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
+            Mock<IPlayerFactory> playerFactory = new Mock<IPlayerFactory>();
+
             IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
-            Game game = new Game(mockLogger.Object, diceGenerator.Object, PlayerType.Regular, 2, 1);
+            Game game = new Game(mockLogger.Object, diceGenerator.Object, playerFactory.Object, PlayerType.Regular);
             game.Players = [player];
             player.MoveToPosition(startPosition);
             player.ReverseMoving = true;
@@ -112,6 +123,7 @@ namespace Ganzenbord.Unittests
             //ASSERT
             Assert.Equal(endPosition, player.Position);
         }
+
         [Theory]
         [InlineData(new int[] { 4, 3 }, 60, 52)]
         [InlineData(new int[] { 4, 6 }, 57, 49)]
@@ -120,8 +132,9 @@ namespace Ganzenbord.Unittests
             //ARRANGE
             Mock<ILogger> mockLogger = new Mock<ILogger>();
             Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
+            Mock<IPlayerFactory> playerFactory = new Mock<IPlayerFactory>();
             IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
-            Game game = new Game(mockLogger.Object, diceGenerator.Object, PlayerType.Regular, 2, 1);
+            Game game = new Game(mockLogger.Object, diceGenerator.Object, playerFactory.Object, PlayerType.Regular);
             game.Players = [player];
             player.MoveToPosition(startPosition);
 

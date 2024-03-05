@@ -4,12 +4,12 @@ namespace Ganzenbord.Business.Squares
 {
     public class End : ISquare
     {
+        public int Position { get; set; }
+
         public End(int position)
         {
             Position = position;
         }
-
-        public int Position { get; set; }
 
         public void PlayerEntersSquare(IPlayer player)
         {

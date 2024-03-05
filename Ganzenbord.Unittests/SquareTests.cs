@@ -1,5 +1,6 @@
-﻿using Ganzenbord.Business.Dice;
-using Ganzenbord.Business;
+﻿using Ganzenbord.Business;
+using Ganzenbord.Business.Dice;
+using Ganzenbord.Business.Factory;
 using Ganzenbord.Business.Logger;
 using Ganzenbord.Business.Player;
 using Ganzenbord.Business.Squares;
@@ -45,8 +46,9 @@ namespace Ganzenbord.Unittests
             //arrange
             Mock<ILogger> mockLogger = new Mock<ILogger>();
             Mock<IDiceGenerator> diceGenerator = new Mock<IDiceGenerator>();
+            Mock<IPlayerFactory> playerFactory = new Mock<IPlayerFactory>();
             IPlayer player = new RegularPlayer(mockLogger.Object, PlayerColor.Red);
-            Game game = new Game(mockLogger.Object, diceGenerator.Object, PlayerType.Regular, 2, 1);
+            Game game = new Game(mockLogger.Object, diceGenerator.Object, playerFactory.Object, PlayerType.Regular);
             game.Players = [player];
             player.AmountOfSkips = 1;
 
@@ -55,7 +57,6 @@ namespace Ganzenbord.Unittests
 
             //assert
             Assert.Equal(0, player.AmountOfSkips);
-       
         }
 
         [Fact]

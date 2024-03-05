@@ -1,5 +1,4 @@
-﻿
-using Ganzenbord.Business.Logger;
+﻿using Ganzenbord.Business.Logger;
 
 namespace Ganzenbord
 {
@@ -9,10 +8,16 @@ namespace Ganzenbord
         {
             Console.WriteLine(message);
         }
+
         public string Input(string message)
         {
             Log(message);
             return Console.ReadLine();
+        }
+
+        public void WaitForKeyStroke()
+        {
+            Console.ReadKey();
         }
     }
 }

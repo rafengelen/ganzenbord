@@ -3,5 +3,8 @@
 public interface ILogger
 {
     string Input(string message);
+
     void Log(string message);
+
+    void WaitForKeyStroke();
 }

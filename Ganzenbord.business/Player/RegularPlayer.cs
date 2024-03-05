@@ -5,12 +5,12 @@ namespace Ganzenbord.Business.Player
 {
     public class RegularPlayer(ILogger logger, PlayerColor color) : IPlayer
     {
-
+        public ILogger Logger { get; private set; } = logger;
         public int Position { get; private set; }
         public int AmountOfSkips { get; set; } = 0;
         public bool KeepSkipping { get; set; } = false;
         public PlayerColor Color { get; private set; } = color;
-        public ILogger Logger { get; private set; } = logger;
+
         public bool IsWinner { get; set; }
         public bool ReverseMoving { get; set; } = false;
         public int[] LastDiceRole { get; set; }
@@ -34,8 +34,6 @@ namespace Ganzenbord.Business.Player
             }
         }
 
-
-
         public void Move(int[] dice)
         {
             LastDiceRole = dice;
@@ -48,8 +46,6 @@ namespace Ganzenbord.Business.Player
         private int CalculatePosition(int[] dice)
         {
             int position;
-            
-            
 
             position = Position + dice.Sum();
 
@@ -57,7 +53,7 @@ namespace Ganzenbord.Business.Player
             {
                 return Position - dice.Sum();
             }
-            else if (position > GooseGameBoard.Instance.Squares.Length-1)
+            else if (position > GooseGameBoard.Instance.Squares.Length - 1)
             {
                 //Gameboard.count
                 //terugkijken naar hoeveel te veel, dynamisch

@@ -4,13 +4,13 @@ namespace Ganzenbord.Business.Squares
 {
     public class Well : ISquare
     {
+        public int Position { get; set; }
+        public IPlayer? SkippedPlayer { get; set; }
+
         public Well(int position)
         {
             Position = position;
         }
-
-        public int Position { get; set; }
-        public IPlayer? SkippedPlayer { get; set; }
 
         public void PlayerEntersSquare(IPlayer player)
         {

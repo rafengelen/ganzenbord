@@ -121,6 +121,7 @@ namespace Ganzenbord.Unittests
 
             Assert.Equal(typeof(Well), square.GetType());
         }
+
         [Fact]
         public void WhenTypeIsNotDefines_ThenThrowException()
         {
@@ -132,7 +133,24 @@ namespace Ganzenbord.Unittests
             // ACT + ASSERT
             var exceptionReturn = Assert.Throws<Exception>(() =>
             {
-                squareFactory.Create(type,1);
+                squareFactory.Create(type, 1);
+            });
+
+            // ASSERT
+            Assert.Equal(expectedMessage, exceptionReturn.Message);
+        }
+        [Fact]
+        public void WhenInvalidSquareType_ThenThrowException()
+        {
+            // ARRANGE
+            SquareType type = (SquareType)999;
+            string expectedMessage = $"Cannot create square with type {type}";
+            ISquareFactory factory = new SquareFactory();
+
+            // ACT + ASSERT
+            var exceptionReturn = Assert.Throws<Exception>(() =>
+            {
+                factory.Create(type, 2);
             });
 
             // ASSERT
